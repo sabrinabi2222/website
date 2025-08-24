@@ -1,12 +1,13 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sewing – Made by Goo</title>
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
   <header>
     <h1>Sewing Projects</h1>
@@ -17,13 +18,139 @@
     </nav>
   </header>
   <main>
-    <div class="gallery">
-      <video autoplay loop muted playsinline>
-         <source src="https://res.cloudinary.com/duhf1zypz/video/upload/v1755906730/IMG_2435_sjw1vv.mov" type="video/mp4">
-          Your browser does not support the video tag.
-      </video>
+
+    <div id="projects">
+      <p class="muted">Loading…</p>
     </div>
-    <p>A set of three flower pot holders for Martin's mom. Thanks for letting us borrow the van!</p>
   </main>
+  <script>
+    // One observer to auto-play/pause videos by visibility
+    const videoObserver = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        const v = e.target;
+        if (e.isIntersecting) {
+          v.play().catch(() => { });
+        } else {
+          v.pause();
+          v.currentTime = 0;
+        }
+      }
+    }, { threshold: 0.6 }); // play when ~60% visible
+
+    // Convert simple Markdown links + plain URLs in captions to clickable <a> tags
+    function captionToHTML(s = "") {
+      // escape HTML first
+      let html = s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      // [text](https://url)
+      html = html.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,
+        '<a href="$2" target="_blank" rel="noopener">$1</a>');
+      // bare URLs → links
+      html = html.replace(/(^|\s)(https?:\/\/[^\s<]+)/g,
+        '$1<a href="$2" target="_blank" rel="noopener">$2</a>');
+      return html;
+    }
+
+    function displayImageUrl(u) {
+      // insert Cloudinary transform so HEIC/HEIF → browser-friendly format
+      return u.includes("/image/upload/")
+        ? u.replace("/image/upload/", "/image/upload/f_auto,q_auto/")
+        : u;
+    }
+    // Transcode to SDR H.264 MP4 and cap size so the browser doesn't struggle
+    function displayVideoUrl(u, w = 720) {
+      if (!u.includes('/video/upload/')) return u;
+      return u.replace(
+        '/video/upload/',
+        `/video/upload/c_limit,w_${w},fps_30,br_1m,q_auto:good,vc_h264,f_mp4/`
+      );
+    }
+
+    // Build a poster from 1s into the video, scaled to match
+    function posterFromCloudinaryVideo(u, w = 720) {
+      if (!u.includes('/video/upload/')) return '';
+      const [left, right] = u.split('/video/upload/');
+      const parts = right.split('/');
+      const last = parts.pop();
+      const baseNoQuery = last.split('?')[0];
+      const basename = baseNoQuery.replace(/\.[^.]+$/, '');
+      const path = parts.length ? parts.join('/') + '/' : '';
+      return `${left}/video/upload/so_1,c_limit,w_${w},f_jpg,q_auto/${path}${basename}.jpg`;
+    }
+    (async function () {
+      const res = await fetch('sewing.json', { cache: 'no-store' });
+      const data = await res.json();
+
+      // data: { order?:[], projects:{ slug: { caption?, title?, items:[{url,type}] } } }
+      const projectsData = data.projects || {};
+      const order = data.order || Object.keys(projectsData).sort((a, b) => a.localeCompare(b));
+
+
+
+      const container = document.getElementById('projects');
+      container.innerHTML = '';
+
+      for (const projectKey of order) {
+        const meta = projectsData[projectKey] || {};
+        const items = meta.items || [];
+        const title = meta.title || "";
+        const caption = meta.caption || "";
+
+        const section = document.createElement('section');
+        section.className = 'project';
+
+        const wrap = document.createElement('div');
+        wrap.className = 'project-wrap';
+
+        // Left column: caption-only with vertical bar
+        const aside = document.createElement('aside');
+        aside.className = 'project-aside caption-only';
+
+        const p = document.createElement('p');
+        p.className = 'project-caption';
+        // use caption from JSON; if empty, fall back to a pretty version of the slug
+        const captionText = caption || projectKey.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+        p.innerHTML = captionToHTML(captionText);
+
+        aside.appendChild(p);
+
+
+        const grid = document.createElement('div');
+        grid.className = 'gallery';
+
+        for (const item of items) {
+          const card = document.createElement('figure');
+          card.className = 'card';
+
+          if (item.type === 'video') {
+            const v = document.createElement('video');
+            v.className = 'hover-video';
+            v.muted = true; v.playsInline = true; v.loop = true; v.preload = 'metadata';
+            v.controls = false;
+            v.poster = posterFromCloudinaryVideo(item.url);
+            v.src = (typeof displayVideoUrl === 'function') ? displayVideoUrl(item.url) : item.url;
+            v.addEventListener('loadedmetadata', () => {
+              if (v.videoWidth && v.videoHeight) v.style.aspectRatio = `${v.videoWidth} / ${v.videoHeight}`;
+            });
+            card.appendChild(v);
+            videoObserver.observe(v);
+          } else {
+            const img = document.createElement('img');
+            img.loading = 'lazy';
+            img.src = displayImageUrl(item.url);
+            img.alt = projectKey;
+            card.appendChild(img);
+          }
+          grid.appendChild(card);
+        }
+
+        wrap.appendChild(aside);
+        wrap.appendChild(grid);
+        section.appendChild(wrap);
+        container.appendChild(section);
+      }
+    })();
+  </script>
+
 </body>
+
 </html>

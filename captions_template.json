@@ -1,0 +1,206 @@
+{
+  "order": [
+    "SecondSewingSetup",
+    "FirstSewingOrganizer",
+    "NewSewingMachine",
+    "WorkingonTamsMachine",
+    "FirstTShirtProject",
+    "FirstRiceHeatingPad",
+    "HalfApron",
+    "FirstToteBag",
+    "KevGrandmasTotes",
+    "SewingBin",
+    "BasketLiners",
+    "BaileyRiceHeatingPad",
+    "FirstPotHolder",
+    "FirstBabyOutfitFarmer",
+    "GreenToteBag",
+    "MontanaPinkOutfit",
+    "BathroomCurtains",
+    "BaileyPotHolder",
+    "BaileyPinaforeApron",
+    "FirstThrowPillow",
+    "FirstPenHolder",
+    "GreenPencilPouch",
+    "SecondWiderPenHolder",
+    "MoonHalloweenToys",
+    "ClothPad",
+    "GreenMoonToy",
+    "XmasPotHolderForWork",
+    "MakeupBag",
+    "AmandaPencilPouch",
+    "PurpleFlowerToteBag",
+    "ElasticYellowPencilPouch",
+    "KhrisKindleCase",
+    "CadenAndMcbreenGifts",
+    "AshleyAndTariBag",
+    "CadenPintHolder",
+    "HarperOutfit",
+    "BobToteBag",
+    "NaiNaiTote",
+    "JuneAndElaineOutfit",
+    "MartinMomPotHolder"
+  ],
+  "projects": {
+    "AmandaPencilPouch": {
+      "title": "Amandapencilpouch",
+      "caption": "Pencil pouch for Amanda. This was the first time I worked with corduroy fabric (which was from Kevin's Nai Nai!). Inner fabric from Weifang. "
+    },
+    "AshleyAndTariBag": {
+      "title": "Ashleyandtaribag",
+      "caption": "Matching quilted tote bags for Ashley and Tari. Tulip fabric on the outside and honeycomb fabric on the inside for B."
+    },
+    "BaileyPinaforeApron": {
+      "title": "Baileypinaforeapron",
+      "caption": "Old style pinafore apron for Bailey. Wow this one was hard. She posted with it on her [TikTok](https://www.tiktok.com/@healingwithbailey/video/7438720691383438623?lang=en), and it made me so happy "
+    },
+    "BaileyPotHolder": {
+      "title": "Baileypotholder",
+      "caption": "Pot holder for Bailey. I gifted her this with the apron since she loved to cook. Blue fabric from Kevin's Nai Nai. Loved the double stitching around the edges."
+    },
+    "BaileyRiceHeatingPad": {
+      "title": "Baileyriceheatingpad",
+      "caption": "Rice heating pad for Bailey. Miss you B."
+    },
+    "BasketLiners": {
+      "title": "Basketliners",
+      "caption": "Basket liners so that that the garlic and onion skin wouldn't fall through the cracks anymore."
+    },
+    "BathroomCurtains": {
+      "title": "Bathroomcurtains",
+      "caption": "Small bathroom shelf curtains to hide Kevin and I's chaos."
+    },
+    "BobToteBag": {
+      "title": "Bobtotebag",
+      "caption": "Farm-themed tote bag for Bob with a honeycomb pocket inside."
+    },
+    "CadenAndMcbreenGifts": {
+      "title": "Cadenandmcbreengifts",
+      "caption": "Full suite of gifts I brought to Florida when I went for Bailey's celebration of life."
+    },
+    "CadenPintHolder": {
+      "title": "Cadenpintholder",
+      "caption": "Farm-themed ice cream pint holder for Caden"
+    },
+    "ClothPad": {
+      "title": "Clothpad",
+      "caption": "Cloth pad. First time using snaps."
+    },
+    "ElasticYellowPencilPouch": {
+      "title": "Elasticyellowpencilpouch",
+      "caption": "Elastic quilted pencil pouch to go on my notebook and hold lots of items."
+    },
+    "FirstBabyOutfitFarmer": {
+      "title": "Firstbabyoutfitfarmer",
+      "caption": "Trial run of skirt for Montana. First ever baby outfit."
+    },
+    "FirstPenHolder": {
+      "title": "Firstpenholder",
+      "caption": "First try at an elastic two pen holder for my notebook"
+    },
+    "FirstPotHolder": {
+      "title": "Firstpotholder",
+      "caption": "First pot holder attempt. Pre-walking foot era..."
+    },
+    "FirstRiceHeatingPad": {
+      "title": "Firstriceheatingpad",
+      "caption": "Trial run of rice heating pad before making one for Bailey. "
+    },
+    "FirstSewingOrganizer": {
+      "title": "Firstsewingorganizer",
+      "caption": "My initial sewing room organization in an IKEA cabinet"
+    },
+    "FirstTShirtProject": {
+      "title": "Firsttshirtproject",
+      "caption": "First thing I sewed, using an old t-shirt. A couple pouches and a book cover."
+    },
+    "FirstThrowPillow": {
+      "title": "Firstthrowpillow",
+      "caption": "Throw pillow cover for Fall"
+    },
+    "FirstToteBag": {
+      "title": "Firsttotebag",
+      "caption": "First 1/2 yard tote bag"
+    },
+    "GreenMoonToy": {
+      "title": "Greenmoontoy",
+      "caption": "Cat toy for Moon with two ribbons coming out the back."
+    },
+    "GreenPencilPouch": {
+      "title": "Greenpencilpouch",
+      "caption": "Pencil pouch for me"
+    },
+    "GreenToteBag": {
+      "title": "Greentotebag",
+      "caption": "Tote bag for Kevin's mom for mother's day."
+    },
+    "HalfApron": {
+      "title": "Halfapron",
+      "caption": "Half apron. First project with gathering"
+    },
+    "HarperOutfit": {
+      "title": "Harperoutfit",
+      "caption": "Bubble romper for Harper! Cutie"
+    },
+    "JuneAndElaineOutfit": {
+      "title": "Juneandelaineoutfit",
+      "caption": "Bubble rompers for Elaine and June"
+    },
+    "KevGrandmasTotes": {
+      "title": "Kevgrandmastotes",
+      "caption": "Tote bag for Kevin's Nai Nai and Lao Lao. First thing I sewed them."
+    },
+    "KhrisKindleCase": {
+      "title": "Khriskindlecase",
+      "caption": "Kindle case for Khris's 32nd birthday"
+    },
+    "MakeupBag": {
+      "title": "Makeupbag",
+      "caption": "Matching cosmetic bags for me, Kathy, and Kevin's mom for Christmas 2024."
+    },
+    "MartinMomPotHolder": {
+      "title": "Martinmompotholder",
+      "caption": "Set of three flower pot holders for Martin's mom. Thanks for letting us use the van! First time doing binding."
+    },
+    "MontanaPinkOutfit": {
+      "title": "Montanapinkoutfit",
+      "caption": "Skirt with straps for Montana. She's so cute."
+    },
+    "MoonHalloweenToys": {
+      "title": "Moonhalloweentoys",
+      "caption": "Halloween themed toys for Moon, I love this fabric. Wand toy and a kicker."
+    },
+    "NaiNaiTote": {
+      "title": "Nainaitote",
+      "caption": "Quilted pink polka dot tote bag for Nai Nai."
+    },
+    "NewSewingMachine": {
+      "title": "Newsewingmachine",
+      "caption": "Sewing machine I use - 1966 Singer 603"
+    },
+    "PurpleFlowerToteBag": {
+      "title": "Purpleflowertotebag",
+      "caption": "Purple flower tote bag. First time doing the boxed edges."
+    },
+    "SecondSewingSetup": {
+      "title": "Secondsewingsetup",
+      "caption": "Current sewing organization. Shout out IKEA and Jerry phone calls."
+    },
+    "SecondWiderPenHolder": {
+      "title": "Secondwiderpenholder",
+      "caption": "Next iteration of the elastic two pen holder, a bit wider."
+    },
+    "SewingBin": {
+      "title": "Sewingbin",
+      "caption": "Small bin to hold misc sewing items."
+    },
+    "WorkingonTamsMachine": {
+      "title": "Workingontamsmachine",
+      "caption": "Working on my mom's sewing machine - which is the same one as mine!"
+    },
+    "XmasPotHolderForWork": {
+      "title": "Xmaspotholderforwork",
+      "caption": "Christmas themed pot holder for white elephant at work. Jihye got it! "
+    }
+  }
+}
