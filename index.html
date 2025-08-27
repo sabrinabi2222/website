@@ -4,43 +4,155 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Made by goo</title>
+  <title>Made by Goo</title>
+
+  <!-- same retro fonts you used on sewing -->
+  <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
+  <script>
+    // ✨ normal cursor + sparkle trail
+    (function () {
+      const canHover = matchMedia('(hover:hover)').matches;
+      const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!canHover || reduced) return; // no trail on touch or reduced-motion
+
+      // choose your sparkle characters (mix & match, or keep one)
+      const SHAPES = ['✧', '✦', '★', '✺']; // swap in '♥' if you want hearts sometimes
+      let last = 0;
+      const MIN_MS = 40; // rate limit spawns
+
+      document.addEventListener('mousemove', (e) => {
+        const now = performance.now();
+        if (now - last < MIN_MS) return;
+        last = now;
+
+        const s = document.createElement('span');
+        s.className = 'spark';
+        s.textContent = SHAPES[Math.floor(Math.random() * SHAPES.length)];
+
+        // random tiny rotation/size so it feels lively
+        const rot = (Math.random() * 20 - 10).toFixed(1);
+        const scale = 0.9 + Math.random() * 0.3;
+
+        s.style.left = e.clientX + 'px';
+        s.style.top = e.clientY + 'px';
+        s.style.transform = `translate(-50%, -50%) scale(${scale}) rotate(${rot}deg)`;
+
+        document.body.appendChild(s);
+        // clean up after animation
+        setTimeout(() => s.remove(), 750);
+      }, { passive: true });
+    })();
+  </script>
   <header>
+    <div class="marquee"><span>🧵 made by goo ✂️</span></div>
     <h1>Made by Goo</h1>
-    <p>a studio by Sabrina Bi</p>
+    <p class="tagline">a studio by Sabrina Bi</p>
     <nav>
-      <a href="index.html">About</a>
+      <a href="index.html" aria-current="page">About</a>
       <a href="sewing.html">Sewing</a>
       <a href="photography.html">Photography</a>
     </nav>
   </header>
 
-  <!-- ===== About Me Section ===== -->
-  <section id="about">
-    <h2>About Me</h2>
-    <p>
-      I'm Goo!
-    </p>
-    <p>
-      Use the tabs to explore my sewing and photography.
-    </p>
-  </section>
+  <main>
+    <!-- Intro panel (matches sewing’s vibe) -->
+    <section class="intro">
+      <h2>Hi!</h2>
+      <p>
+        Welcome to a cozy place to hold I’ve made and moments I’ve captured — all <strong>made by goo</strong>
+        (even the website).
+      </p>
+    </section>
 
-  <!-- ===== Contact Section ===== -->
-  <section id="contact">
-    <h2>Contact</h2>
-    <p>
-      sabrinabi2222@gmail.com.
-    </p>
-  </section>
+    <!-- Feature cards linking to your sections -->
+    <section class="features section">
+      <div class="feature-grid">
+        <a class="retro-card feature-card" href="sewing.html">
+          <div class="feature-emoji" aria-hidden="true">🪡</div>
+          <h3>Sewing</h3>
+          <p>Projects & process — most recent first.</p>
+        </a>
+
+        <a class="retro-card feature-card" href="photography.html">
+          <div class="feature-emoji" aria-hidden="true">📷</div>
+          <h3>Photography</h3>
+          <p>Some of my fav pictures to date.</p>
+        </a>
+
+        <a class="retro-card feature-card" href="index.html#contact">
+          <div class="feature-emoji" aria-hidden="true">✉️</div>
+          <h3>Contact</h3>
+          <p>Say hi or ask about a custom piece.</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- About text (kept minimal since intro handles most) -->
+    <section id="about" class="section">
+      <p class="muted">
+        Website made by goo. Built with plain HTML/CSS/JS and Cloudinary for media.
+      </p>
+    </section>
+
+    <!-- Contact (non-clickable email, easy to copy) -->
+    <section id="contact" class="section">
+      <h2>Get in touch</h2>
+      <p class="email-line">
+        email:
+        <span class="email-obf">
+          sabrinabi2222 <span aria-hidden="true">[at]</span><span class="sr-only">@</span>
+          gmail <span aria-hidden="true">[dot]</span><span class="sr-only">.</span>
+          com
+        </span>
+      </p>
+    </section>
+  </main>
 
   <footer>
     &copy; 2025 Sabrina Bi.
   </footer>
+  <script>
+    function mostRecentSlug(projects, order) {
+      // your order is most-recent-first, so take the first
+      if (Array.isArray(order) && order.length) return order[0];
+      const keys = Object.keys(projects);
+      return keys[0] || null;
+    }
+    function prettySlug(slug) {
+      return (slug || "").replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+    }
+    async function putLatestCaption(cardSelector, jsonPath) {
+      const card = document.querySelector(cardSelector);
+      if (!card) return;
+      try {
+        const res = await fetch(jsonPath, { cache: 'no-store' });
+        if (!res.ok) return;
+        const data = await res.json();
+        const projects = data.projects || {};
+        const slug = mostRecentSlug(projects, data.order || []);
+        if (!slug) return;
+
+        const caption = (projects[slug]?.caption || prettySlug(slug)).trim();
+
+        // use the existing <p> inside the card if present, else create one
+        let p = card.querySelector('p');
+        if (!p) { p = document.createElement('p'); card.appendChild(p); }
+        p.classList.add('feature-caption');
+        p.textContent = caption;
+      } catch (e) {
+        console.warn('Could not load caption from', jsonPath, e);
+      }
+    }
+
+    // inject into your existing emoji cards
+    putLatestCaption('a.feature-card[href="sewing.html"]', 'sewing.json');
+    putLatestCaption('a.feature-card[href="photography.html"]', 'photography.json'); // harmless if missing
+  </script>
+
 </body>
 
 </html>
