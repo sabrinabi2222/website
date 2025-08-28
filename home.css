@@ -805,4 +805,121 @@ header .tagline{
   letter-spacing: .3px;
   margin: .35rem 0 .35rem;
 }
+/* === MOBILE BLEED FIX (paste at end of home.css) ======================= */
 
+/* Never allow a horizontal scrollbar */
+html, body { overflow-x: hidden; }
+
+/* Make sure containers can't exceed the viewport */
+.portal,
+.portal-inner,
+.portal-inner--split,
+.door-stack { max-width: 100%; }
+
+/* Let the left (image) column be flexible even on desktop */
+.portal-inner--split{
+  /* flexible image column, flexible doors column */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 360px);
+  column-gap: clamp(14px, 4vw, 48px);
+  width: 100%;
+}
+
+/* Prevent grid children from forcing overflow */
+.door-stack, .door { min-width: 0; }
+
+/* Bubble defaults shouldn't push layout */
+.portal--split .bubble{
+  max-width: 20ch;
+  right: auto;
+  left: calc(100% + 10px);
+}
+
+/* Make the sticker respect the viewport width */
+.sticker.sticker--square{
+  width: clamp(220px, 40vw, 520px);
+  max-width: 100%;
+}
+
+/* --- Mobile: stack, center, and remove any off-canvas positions --- */
+@media (max-width: 900px){
+  .portal-inner--split{ 
+    grid-template-columns: 1fr !important; 
+    column-gap: 16px;
+  }
+
+  .sticker.sticker--square{
+    width: min(88vw, 360px) !important;
+    justify-self: center;
+  }
+
+  /* Bubble sits under the photo; no tail */
+  .portal--split .bubble{
+    position: static !important;
+    transform: none !important;
+    margin: 10px auto 0 !important;
+    max-width: 28ch;
+  }
+  .portal--split .bubble::before,
+  .portal--split .bubble::after{ display: none !important; }
+
+  /* Doors fill the width nicely and won’t overflow */
+  .door-stack{
+    width: 100%;
+    max-width: 520px;
+    justify-self: center;
+    gap: 12px;
+  }
+  .door{
+    width: 100%;
+    min-height: 64px;
+    padding: 12px 14px;
+    grid-template-columns: 36px 1fr;   /* emoji | text */
+    column-gap: 12px;
+  }
+  .door .door-emoji{ font-size: 22px; }
+  .door .door-title{ font-size: 17px; line-height: 1.2; }
+  .door .door-sub{ font-size: 13px; }
+}
+
+/* Safety: long subtitles can’t force a wide card */
+.door .door-sub{
+  overflow-wrap: anywhere;
+  word-break: normal;
+  text-wrap: balance;
+}
+
+/* === Responsive door width scaling (append at end of home.css) === */
+
+/* Desktop/tablet: grow the right column with screen size */
+@media (min-width: 900px){
+  .portal-inner--split{
+    /* big cat at left, responsive door column at right */
+    grid-template-columns: clamp(360px, 44vw, 640px) clamp(300px, 32vw, 520px);
+    column-gap: clamp(18px, 4vw, 64px);
+    max-width: min(1200px, 96vw);
+  }
+
+  .door-stack{
+    width: 100%;
+    max-width: none;          /* let the column width control door width */
+  }
+
+  /* Doors scale up smoothly on large screens */
+  .door{
+    min-height: clamp(64px, 7.5vh, 96px);
+    padding: clamp(12px, 1vw, 18px) clamp(14px, 1.2vw, 22px);
+    grid-template-columns: clamp(36px, 1.8vw, 44px) 1fr;  /* emoji | text */
+    column-gap: clamp(10px, 1vw, 16px);
+  }
+  .door .door-emoji{ font-size: clamp(22px, 1.6vw, 30px); }
+  .door .door-title{ font-size: clamp(18px, 1.3vw, 22px); }
+  .door .door-sub{ font-size: clamp(13px, 1vw, 16px); }
+}
+
+/* Extra-wide desktops: allow a touch more width, still bounded */
+@media (min-width: 1280px){
+  .portal-inner--split{
+    grid-template-columns: clamp(420px, 44vw, 700px) clamp(340px, 30vw, 580px);
+    max-width: 1300px;
+  }
+}
