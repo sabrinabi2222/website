@@ -11,20 +11,15 @@
 
 <body>
   <header>
+    <div class="marquee"><span>🧵 made by goo ✂️</span></div>
     <h1>Photography</h1>
     <nav>
       <a href="index.html">About</a>
       <a href="sewing.html">Sewing</a>
-      <a href="photography.html" class="active">Photography</a>
+      <a href="photography.html">Photography</a>
     </nav>
   </header>
-
   <main>
-    <section class="intro">
-      <p>
-        A collection of my favorite photography projects. Click an image or video to view full size.
-      </p>
-    </section>
 
     <div id="projects">
       <p class="muted">Loading…</p>
@@ -115,6 +110,8 @@
         for (const item of items) {
           const card = document.createElement('figure');
           card.className = 'card';
+          card.setAttribute('data-label', title); // <-- add this line
+
 
           if (item.type === 'video') {
             const v = document.createElement('video');

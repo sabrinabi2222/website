@@ -6,51 +6,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Made by Goo</title>
 
-  <!-- same retro fonts you used on sewing -->
+  <!-- global retro fonts + global styles -->
   <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
+  <!-- home-only styles -->
+  <link rel="stylesheet" href="home.css" />
 </head>
 
-<body>
+<body class="home">
+  <!-- ✨ cursor sparkle (kept) -->
   <script>
-    // ✨ normal cursor + sparkle trail
     (function () {
       const canHover = matchMedia('(hover:hover)').matches;
       const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (!canHover || reduced) return; // no trail on touch or reduced-motion
-
-      // choose your sparkle characters (mix & match, or keep one)
-      const SHAPES = ['✧', '✦', '★', '✺']; // swap in '♥' if you want hearts sometimes
-      let last = 0;
-      const MIN_MS = 40; // rate limit spawns
-
+      if (!canHover || reduced) return;
+      const SHAPES = ['✧', '✦', '★', '✺']; let last = 0; const MIN_MS = 40;
       document.addEventListener('mousemove', (e) => {
-        const now = performance.now();
-        if (now - last < MIN_MS) return;
-        last = now;
-
-        const s = document.createElement('span');
-        s.className = 'spark';
+        const now = performance.now(); if (now - last < MIN_MS) return; last = now;
+        const s = document.createElement('span'); s.className = 'spark';
         s.textContent = SHAPES[Math.floor(Math.random() * SHAPES.length)];
-
-        // random tiny rotation/size so it feels lively
-        const rot = (Math.random() * 20 - 10).toFixed(1);
-        const scale = 0.9 + Math.random() * 0.3;
-
-        s.style.left = e.clientX + 'px';
-        s.style.top = e.clientY + 'px';
-        s.style.transform = `translate(-50%, -50%) scale(${scale}) rotate(${rot}deg)`;
-
-        document.body.appendChild(s);
-        // clean up after animation
-        setTimeout(() => s.remove(), 750);
+        const rot = (Math.random() * 20 - 10).toFixed(1); const scale = 0.9 + Math.random() * 0.3;
+        s.style.left = e.clientX + 'px'; s.style.top = e.clientY + 'px';
+        s.style.transform = `translate(-50%,-50%) scale(${scale}) rotate(${rot}deg)`;
+        document.body.appendChild(s); setTimeout(() => s.remove(), 750);
       }, { passive: true });
     })();
   </script>
+
   <header>
     <div class="marquee"><span>🧵 made by goo ✂️</span></div>
     <h1>Made by Goo</h1>
-    <p class="tagline">a studio by Sabrina Bi</p>
+    <p class="tagline">A studio by Sabrina Bi</p>
+    <!-- hidden on home (we use doors) but keep for consistency -->
     <nav>
       <a href="index.html" aria-current="page">About</a>
       <a href="sewing.html">Sewing</a>
@@ -59,48 +46,46 @@
   </header>
 
   <main>
-    <!-- Intro panel (matches sewing’s vibe) -->
-    <section class="intro">
-      <h2>Hi!</h2>
-      <p>
-        Welcome to a cozy place to hold I’ve made and moments I’ve captured — all <strong>made by goo</strong>
-        (even the website).
-      </p>
-    </section>
+    <section class="portal portal--split">
+      <div class="portal-inner portal-inner--split">
+        <!-- Left: square cat sticker -->
+        <figure class="sticker sticker--square" aria-label="Cat welcome sticker">
+          <img
+            src="https://res.cloudinary.com/duhf1zypz/image/upload/f_auto,q_auto,c_thumb,g_face,w_520,h_520,dpr_auto/v1756345555/IMG_2485_sy9eya.heic"
+            alt="My cat looking into the camera" loading="eager" decoding="async" />
+          <figcaption class="scribble">welcome on in</figcaption>
 
-    <!-- Feature cards linking to your sections -->
-    <section class="features section">
-      <div class="feature-grid">
-        <a class="retro-card feature-card" href="sewing.html">
-          <div class="feature-emoji" aria-hidden="true">🪡</div>
-          <h3>Sewing</h3>
-          <p>Projects & process — most recent first.</p>
-        </a>
+          <!-- Speech bubble -->
+          <div class="bubble" role="note">
+            <span>look at my mom's stuff plz</span>
+          </div>
+        </figure>
 
-        <a class="retro-card feature-card" href="photography.html">
-          <div class="feature-emoji" aria-hidden="true">📷</div>
-          <h3>Photography</h3>
-          <p>Some of my fav pictures to date.</p>
-        </a>
-
-        <a class="retro-card feature-card" href="index.html#contact">
-          <div class="feature-emoji" aria-hidden="true">✉️</div>
-          <h3>Contact</h3>
-          <p>Say hi or ask about a custom piece.</p>
-        </a>
+        <!-- Right: stacked options -->
+        <div class="door-stack">
+          <a class="door door--sew" href="sewing.html">
+            <span class="door-emoji" aria-hidden="true">🪡</span>
+            <span class="door-title">Sewing</span>
+            <span class="door-sub">Baby outifits, tote bags, and more!</span>
+          </a>
+          <a class="door door--photo" href="photography.html">
+            <span class="door-emoji" aria-hidden="true">📷</span>
+            <span class="door-title">Photography</span>
+            <span class="door-sub">Engagement photos, family photos, and more!</span>
+          </a>
+          <a class="door door--contact" href="#contact">
+            <span class="door-emoji" aria-hidden="true">✉️</span>
+            <span class="door-title">Contact</span>
+            <span class="door-sub">Help me build my portfolio! Reach out for a custom piece or some pictures</span>
+          </a>
+        </div>
       </div>
     </section>
 
-    <!-- About text (kept minimal since intro handles most) -->
-    <section id="about" class="section">
-      <p class="muted">
-        Website made by goo. Built with plain HTML/CSS/JS and Cloudinary for media.
-      </p>
-    </section>
 
-    <!-- Contact (non-clickable email, easy to copy) -->
-    <section id="contact" class="section">
-      <h2>Get in touch</h2>
+    <!-- Contact -->
+    <section id="contact" class="contact">
+      <h3>Get in touch</h3>
       <p class="email-line">
         email:
         <span class="email-obf">
@@ -109,49 +94,35 @@
           com
         </span>
       </p>
+      <p class="email-line">
+        instagram:
+        <a class="ig-link" href="https://www.instagram.com/madebygoo_/" target="_blank" rel="noopener noreferrer"
+          aria-label="Instagram @madebygoo_">
+          @madebygoo_
+        </a>
+      </p>
+
     </section>
   </main>
 
-  <footer>
-    &copy; 2025 Sabrina Bi.
-  </footer>
-  <script>
-    function mostRecentSlug(projects, order) {
-      // your order is most-recent-first, so take the first
-      if (Array.isArray(order) && order.length) return order[0];
-      const keys = Object.keys(projects);
-      return keys[0] || null;
-    }
-    function prettySlug(slug) {
-      return (slug || "").replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase());
-    }
-    async function putLatestCaption(cardSelector, jsonPath) {
-      const card = document.querySelector(cardSelector);
-      if (!card) return;
-      try {
-        const res = await fetch(jsonPath, { cache: 'no-store' });
-        if (!res.ok) return;
-        const data = await res.json();
-        const projects = data.projects || {};
-        const slug = mostRecentSlug(projects, data.order || []);
-        if (!slug) return;
+  <footer>&copy; 2025 Sabrina Bi. Built with plain HTML/CSS/JS + Cloudinary.</footer>
+<script>
+  // Make the Contact door feel active: smooth scroll and replay highlight
+  document.querySelectorAll('a[href="#contact"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const target = document.getElementById('contact');
+      // Always smooth-scroll (some browsers ignore CSS-only behavior)
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-        const caption = (projects[slug]?.caption || prettySlug(slug)).trim();
-
-        // use the existing <p> inside the card if present, else create one
-        let p = card.querySelector('p');
-        if (!p) { p = document.createElement('p'); card.appendChild(p); }
-        p.classList.add('feature-caption');
-        p.textContent = caption;
-      } catch (e) {
-        console.warn('Could not load caption from', jsonPath, e);
-      }
-    }
-
-    // inject into your existing emoji cards
-    putLatestCaption('a.feature-card[href="sewing.html"]', 'sewing.json');
-    putLatestCaption('a.feature-card[href="photography.html"]', 'photography.json'); // harmless if missing
-  </script>
+      // Replay the pink flash every time
+      target.classList.remove('flash');
+      // Reflow trick to restart the animation
+      void target.offsetWidth;
+      target.classList.add('flash');
+    });
+  });
+</script>
 
 </body>
 

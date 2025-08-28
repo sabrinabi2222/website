@@ -1,190 +1,187 @@
-/* -------------------- Global Styles -------------------- */
-body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Inter', sans-serif;
-  background-color: #fafafa;
-  color: #222;
-  line-height: 1.5;
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+
+/* ===== brand vars ===== */
+:root{
+  --accent: #FADADD;                 /* blush pink (same as other pages) */
+  --brand-font-accent: "VT323", monospace;
+  --brand-border: #111;
 }
 
-header {
-  text-align: center;
-  padding: 2rem 1rem 1.2rem;
+/* ===== base ===== */
+body{
+  margin:0;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color:#222;
+  background:#fafafa;
 }
 
-header h1 {
-  font-size: 2rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-}
-
-nav {
-  margin-top: 0.5rem;
-}
-
-nav a {
-  text-decoration: none;
-  color: #666;
-  margin: 0 0.75rem;
-  font-weight: 500;
-  transition: color 0.2s ease;
-}
-
-nav a:hover,
-nav a.active {
-  color: #111;
-}
-
-/* -------------------- Intro -------------------- */
-.intro {
-  text-align: center;
-  padding: 0 1rem 1.5rem;
-  max-width: 600px;
-  margin: 0 auto;
-  color: #444;
-}
-
-/* -------------------- Projects -------------------- */
-#projects {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 1rem 1.5rem 4rem;
-}
-
-.project {
-  margin-bottom: 3rem;
-}
-
-.project-header {
-  margin-bottom: 1rem;
-}
-
-.project-header h2 {
-  font-size: 1.3rem;
-  font-weight: 600;
-  margin: 0;
-}
-
-.project-caption {
-  font-size: 0.95rem;
-  color: #666;
-  margin: 0.3rem 0 0.5rem;
-}
-
-/* -------------------- Pinterest-style Gallery -------------------- */
-.gallery--photography {
-  column-count: 3;          /* Number of columns on desktop */
-  column-gap: 12px;         /* Space between columns */
-  padding: 0;
-  margin-top: 1rem;
-}
-
-@media (max-width: 1200px) {
-  .gallery--photography {
-    column-count: 2;        /* Tablet view */
-  }
-}
-
-@media (max-width: 700px) {
-  .gallery--photography {
-    column-count: 1;        /* Mobile view */
-  }
-}
-.gallery--photography {
+/* ===== header: pink bar + marquee + chip tabs (grid-spaced to match Sewing) ===== */
+header{
+  background: var(--accent);
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 12px;
+  grid-auto-flow: row;
+  justify-items: center;
+  row-gap: 12px;                 /* spacing between marquee, h1, nav */
+  padding: 2rem 1rem 1.5rem;     /* same as Sewing */
+  text-align: center;
+  overflow: hidden;              /* prevent margin-collapsing */
+}
+
+header > h1,
+header > nav{ margin: 0; }       /* spacing comes from row-gap */
+
+header h1{
+  font-family: "Press Start 2P", system-ui, sans-serif;
+  font-size: 30px;
+  letter-spacing: .5px;
+  line-height: 1.1;
+}
+
+/* marquee strip (left/right pink reveal; vertical space via grid gap) */
+.marquee{
+  overflow: hidden;
+  white-space: nowrap;
+  background: #fff;
+  border-top: 2px solid #222;
+  border-bottom: 2px solid #222;
+  margin: 0 12px;                /* no bottom margin; row-gap handles it */
+  padding: .35rem 0;
+}
+.marquee span{
+  display: inline-block;
+  font-family: "VT323", monospace;
+  font-size: 20px;
+  letter-spacing: .25px;
+  color:#222;
+  animation: slide 18s linear infinite;
+}
+@keyframes slide{ from{transform:translateX(100%);} to{transform:translateX(-100%);} }
+
+/* chip-style tabs on pink */
+nav{ /* margin handled by grid gap */ }
+nav a{
+  display:inline-block;
+  margin:0 .5rem;
+  padding:.35rem .7rem;
+  text-decoration:none;
+  color:#222;
+  font-weight:700;
+  background:#fff;                          /* white chips */
+  border:2px solid var(--brand-border);
+  box-shadow:2px 2px 0 var(--brand-border);
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+nav a:hover,
+nav a:focus-visible{
+  transform: translate(-1px,-1px);
+  box-shadow:3px 3px 0 var(--brand-border);
+  outline:none;
+}
+
+/* ===== intro ===== */
+.intro{
+  text-align:center;
+  padding:0 1rem 1.25rem;
+  max-width:680px;
+  margin:0 auto;
+  color:#444;
+}
+
+/* ===== projects ===== */
+#projects{ max-width:1400px; margin:0 auto; padding:1rem 1.25rem 4rem; }
+
+.project{ margin:2.5rem 0; }
+
+.project-header h2{
+  font-family: var(--brand-font-accent);
+  font-size:28px;
+  font-weight:400;
+  margin:0 0 .35rem;
+  letter-spacing:.3px;
+}
+.project-caption{ margin:.25rem 0 0; color:#666; }
+
+/* ===== gallery grid (minimal version) ===== */
+.gallery--photography{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
   align-items: start;
 }
 
-/* Default media styling */
-.gallery--photography img,
-.gallery--photography video {
-  width: 100%;
-  height: auto; /* keep natural aspect ratio */
-  border-radius: 8px;
-  object-fit: contain; /* no cropping */
-  background-color: #000;
-  transition: transform 0.2s ease;
-}
-
-.gallery--photography img:hover,
-.gallery--photography video:hover {
-  transform: scale(1.02);
-}
-
-/* Make landscape photos/videos span 2 columns */
-.gallery--photography figure.landscape {
-  grid-column: span 2;
-}
-
-/* Optional: improve row alignment slightly */
-.gallery--photography .card {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/* Remove card chrome */
+.gallery--photography .card{
   margin: 0;
-}
-
-
-
-/* -------------------- Lightbox -------------------- */
-.lightbox {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.9);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-}
-
-.lightbox-dialog {
-  max-width: 95%;
-  max-height: 95%;
-  background: #000;
   padding: 0;
-  border-radius: 6px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-  display: flex;
-  flex-direction: column;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  border-radius: 0;
   position: relative;
+  transition: transform .08s ease;  /* subtle hover */
 }
 
-.lightbox-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
+.gallery--photography img,
+.gallery--photography video{
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 6px;   /* set to 0 if you want hard edges */
+  background: #000;
 }
 
-.lightbox-media {
-  max-width: 100%;
-  max-height: 90vh;
+@media (hover:hover){
+  .gallery--photography .card:hover{
+    transform: translateY(-2px);
+  }
 }
 
-.lightbox-close {
-  position: absolute;
-  top: 12px;
-  right: 16px;
-  background: none;
-  color: white;
-  font-size: 1.8rem;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-}
+/* Landscape pieces can span 2 cols */
+.gallery--photography figure.landscape{ grid-column: span 2; }
 
-/* -------------------- Misc -------------------- */
-.muted {
-  color: #888;
-  text-align: center;
-}
+/* no hover labels */
+.gallery--photography .card::after{ content: none; }
 
-.lightbox[hidden] {
-  display: none !important;
+/* ===== lightbox (retro chrome) ===== */
+.lightbox{
+  position:fixed; inset:0; z-index:9999;
+  display:grid; place-items:center;
+  background: rgba(0,0,0,.85);
+}
+.lightbox[hidden]{ display:none !important; }
+
+.lightbox-dialog{
+  position:relative;
+  background:#fff;
+  border:2px solid var(--brand-border);
+  border-radius:8px;
+  box-shadow:10px 10px 0 var(--brand-border);
+  padding:10px;
+}
+.lightbox-body{ display:grid; place-items:center; }
+.lightbox-media{
+  max-width:min(92vw,1200px);
+  max-height:88vh;
+  background:#000;
+  border-radius:4px;
+}
+.lightbox-close{
+  position:absolute; top:8px; right:10px;
+  font-size:22px; line-height:1;
+  background:#fff; border:2px solid var(--brand-border);
+  border-radius:6px; padding:2px 8px; cursor:pointer;
+  box-shadow:2px 2px 0 var(--brand-border);
+  transition: transform .12s ease;
+}
+.lightbox-close:hover{ transform: translate(-1px,-1px); }
+
+/* ===== misc ===== */
+.muted{ color:#888; text-align:center; }
+strong{ font-weight:700; }
+
+/* put this at the very end of photography.css */
+header > .marquee {
+  justify-self: stretch;   /* fill the grid track */
+  margin: 0 12px 12px;     /* same side/bottom spacing as Sewing */
+  /* (padding/borders stay the same) */
 }
