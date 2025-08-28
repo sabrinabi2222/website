@@ -185,3 +185,14 @@ header > .marquee {
   margin: 0 12px 12px;     /* same side/bottom spacing as Sewing */
   /* (padding/borders stay the same) */
 }
+
+/* === Force single-column on phones === */
+@media (max-width: 700px) {
+  .gallery--photography {
+    grid-template-columns: 1fr !important;
+  }
+  .gallery--photography figure.landscape {
+    grid-column: auto !important; /* don't try to span 2 on mobile */
+  }
+}
+
