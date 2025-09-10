@@ -15,16 +15,74 @@
     <h1>Sewing Projects</h1>
     <nav>
       <a href="index.html">About</a>
-      <a href="sewing.html">Sewing</a>
+      <a href="sewing.html" aria-current="page">Sewing</a>
       <a href="photography.html">Photography</a>
     </nav>
   </header>
-  <main>
 
+  <main>
     <div id="projects">
       <p class="muted">Loading…</p>
     </div>
   </main>
+
+  <script>
+    /* ========= Local / CDN toggle + helpers (use local files the downloader created) ========= */
+    const USE_LOCAL = true; // <- set true to use /media/*, false to keep using Cloudinary
+
+    function safeKey(u){
+      if (!u || !u.includes('/upload/')) return '';
+      let tail = u.split('/upload/')[1].split('?')[0]; // everything after /upload/
+      tail = tail.replace(/\.[^.]+$/,'');              // drop extension
+      return tail.replace(/[\/\\]/g,'-');              // folders -> hyphens
+    }
+
+    function localPaths(u, type){
+      const k = safeKey(u);
+      if (!k) return {};
+      if (type === 'image') {
+        return {
+          grid:  `media/photos/grid/${k}.jpg`,
+          large: `media/photos/large/${k}.jpg`,
+        };
+      } else if (type === 'video') {
+        return {
+          grid:   `media/videos/grid/${k}.mp4`,
+          large:  `media/videos/large/${k}.mp4`,
+          poster: `media/videos/posters/${k}.jpg`,
+        };
+      }
+      return {};
+    }
+
+    // Cloudinary fallbacks (unchanged behavior if a local file is missing)
+    function cdnImage(u, kind){
+      return u.includes('/image/upload/')
+        ? u.replace('/image/upload/', '/image/upload/f_auto,q_auto,' + (kind === 'large' ? 'w_1600' : 'w_900') + '/')
+        : u;
+    }
+    function cdnVideo(u, kind){
+      if (!u.includes('/video/upload/')) return u;
+      const tx = (kind === 'large')
+        ? 'e_volume:mute,c_limit,w_1280,fps_30,br_2m,q_auto:good,vc_h264,f_mp4'
+        : 'e_volume:mute,c_limit,w_720,fps_30,br_1m,q_auto:good,vc_h264,f_mp4';
+      return u.replace('/video/upload/', '/video/upload/' + tx + '/');
+    }
+    function cdnPoster(u){
+      if (!u.includes('/video/upload/')) return '';
+      const [L,R] = u.split('/video/upload/');
+      const base = R.split('?')[0].replace(/\.[^.]+$/,'');
+      return `${L}/video/upload/so_1,c_limit,w_720,f_jpg,q_auto/${base}.jpg`;
+    }
+
+    // Simple API the renderer will use
+    function imgGridSrc(u){  return USE_LOCAL ? localPaths(u,'image').grid  : cdnImage(u,'grid'); }
+    function imgLargeSrc(u){ return USE_LOCAL ? localPaths(u,'image').large : cdnImage(u,'large'); }
+    function vidGridSrc(u){  return USE_LOCAL ? localPaths(u,'video').grid  : cdnVideo(u,'grid'); }
+    function vidLargeSrc(u){ return USE_LOCAL ? localPaths(u,'video').large : cdnVideo(u,'large'); }
+    function vidPoster(u){   return USE_LOCAL ? localPaths(u,'video').poster: cdnPoster(u); }
+  </script>
+
   <script>
     // One observer to auto-play/pause videos by visibility
     const videoObserver = new IntersectionObserver((entries) => {
@@ -37,56 +95,22 @@
           v.currentTime = 0;
         }
       }
-    }, { threshold: 0.6 }); // play when ~60% visible
+    }, { threshold: 0.6 });
 
     // Convert simple Markdown links + plain URLs in captions to clickable <a> tags
     function captionToHTML(s = "") {
-      // escape HTML first
       let html = s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-      // [text](https://url)
-      html = html.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,
-        '<a href="$2" target="_blank" rel="noopener">$1</a>');
-      // bare URLs → links
-      html = html.replace(/(^|\s)(https?:\/\/[^\s<]+)/g,
-        '$1<a href="$2" target="_blank" rel="noopener">$2</a>');
+      html = html.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+      html = html.replace(/(^|\s)(https?:\/\/[^\s<]+)/g, '$1<a href="$2" target="_blank" rel="noopener">$2</a>');
       return html;
     }
 
-    function displayImageUrl(u) {
-      // insert Cloudinary transform so HEIC/HEIF → browser-friendly format
-      return u.includes("/image/upload/")
-        ? u.replace("/image/upload/", "/image/upload/f_auto,q_auto/")
-        : u;
-    }
-    // Transcode to SDR H.264 MP4 and cap size so the browser doesn't struggle
-    function displayVideoUrl(u, w = 720) {
-      if (!u.includes('/video/upload/')) return u;
-      return u.replace(
-        '/video/upload/',
-        `/video/upload/e_volume:mute,c_limit,w_${w},fps_30,br_1m,q_auto:good,vc_h264,f_mp4/`
-      );
-    }
-
-    // Build a poster from 1s into the video, scaled to match
-    function posterFromCloudinaryVideo(u, w = 720) {
-      if (!u.includes('/video/upload/')) return '';
-      const [left, right] = u.split('/video/upload/');
-      const parts = right.split('/');
-      const last = parts.pop();
-      const baseNoQuery = last.split('?')[0];
-      const basename = baseNoQuery.replace(/\.[^.]+$/, '');
-      const path = parts.length ? parts.join('/') + '/' : '';
-      return `${left}/video/upload/so_1,c_limit,w_${w},f_jpg,q_auto/${path}${basename}.jpg`;
-    }
     (async function () {
       const res = await fetch('sewing.json', { cache: 'no-store' });
       const data = await res.json();
 
-      // data: { order?:[], projects:{ slug: { caption?, title?, items:[{url,type}] } } }
       const projectsData = data.projects || {};
       const order = data.order || Object.keys(projectsData).sort((a, b) => a.localeCompare(b));
-
-
 
       const container = document.getElementById('projects');
       container.innerHTML = '';
@@ -94,7 +118,6 @@
       for (const projectKey of order) {
         const meta = projectsData[projectKey] || {};
         const items = meta.items || [];
-        const title = meta.title || "";
         const caption = meta.caption || "";
 
         const section = document.createElement('section');
@@ -109,17 +132,12 @@
 
         const p = document.createElement('p');
         p.className = 'project-caption';
-        // use caption from JSON; if empty, fall back to a pretty version of the slug
         const captionText = caption || projectKey.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
         p.innerHTML = captionToHTML(captionText);
-
         aside.appendChild(p);
-
 
         const grid = document.createElement('div');
         grid.className = 'gallery gallery--retro';
-
-
 
         for (const item of items) {
           const card = document.createElement('figure');
@@ -130,8 +148,20 @@
             v.className = 'hover-video';
             v.muted = true; v.playsInline = true; v.loop = true; v.preload = 'metadata';
             v.controls = false;
-            v.poster = posterFromCloudinaryVideo(item.url);
-            v.src = (typeof displayVideoUrl === 'function') ? displayVideoUrl(item.url) : item.url;
+
+            v.poster = vidPoster(item.url);
+            v.src = vidGridSrc(item.url);
+            v.dataset.large = vidLargeSrc(item.url);
+
+            // graceful fallback if local file missing
+            v.onerror = () => {
+              if (USE_LOCAL) {
+                v.src = cdnVideo(item.url,'grid');
+                v.dataset.large = cdnVideo(item.url,'large');
+                v.poster = cdnPoster(item.url);
+              }
+            };
+
             v.addEventListener('loadedmetadata', () => {
               if (v.videoWidth && v.videoHeight) v.style.aspectRatio = `${v.videoWidth} / ${v.videoHeight}`;
             });
@@ -140,10 +170,20 @@
           } else {
             const img = document.createElement('img');
             img.loading = 'lazy';
-            img.src = displayImageUrl(item.url);
+            img.src = imgGridSrc(item.url);
             img.alt = projectKey;
+            img.dataset.large = imgLargeSrc(item.url);
+
+            img.onerror = () => {
+              if (USE_LOCAL) {
+                img.src = cdnImage(item.url,'grid');
+                img.dataset.large = cdnImage(item.url,'large');
+              }
+            };
+
             card.appendChild(img);
           }
+
           grid.appendChild(card);
         }
 
@@ -154,41 +194,7 @@
       }
     })();
   </script>
-  <script>
-    // ✨ normal cursor + sparkle trail
-    (function () {
-      const canHover = matchMedia('(hover:hover)').matches;
-      const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (!canHover || reduced) return; // no trail on touch or reduced-motion
 
-      // choose your sparkle characters (mix & match, or keep one)
-      const SHAPES = ['✧', '✦', '★', '✺']; // swap in '♥' if you want hearts sometimes
-      let last = 0;
-      const MIN_MS = 40; // rate limit spawns
-
-      document.addEventListener('mousemove', (e) => {
-        const now = performance.now();
-        if (now - last < MIN_MS) return;
-        last = now;
-
-        const s = document.createElement('span');
-        s.className = 'spark';
-        s.textContent = SHAPES[Math.floor(Math.random() * SHAPES.length)];
-
-        // random tiny rotation/size so it feels lively
-        const rot = (Math.random() * 20 - 10).toFixed(1);
-        const scale = 0.9 + Math.random() * 0.3;
-
-        s.style.left = e.clientX + 'px';
-        s.style.top = e.clientY + 'px';
-        s.style.transform = `translate(-50%, -50%) scale(${scale}) rotate(${rot}deg)`;
-
-        document.body.appendChild(s);
-        // clean up after animation
-        setTimeout(() => s.remove(), 750);
-      }, { passive: true });
-    })();
-  </script>
   <!-- Lightbox -->
   <div id="lightbox" class="lightbox" hidden aria-hidden="true">
     <div class="lightbox-backdrop"></div>
@@ -197,23 +203,9 @@
       <div class="lightbox-body"></div>
     </div>
   </div>
-  <script>
-    // --- Cloudinary larger transforms for the lightbox ---
-    function largeImageUrl(u) {
-      return u.includes("/image/upload/")
-        ? u.replace("/image/upload/", "/image/upload/f_auto,q_auto,w_1600/")
-        : u;
-    }
-    function largeVideoUrl(u) {
-      return u.includes('/video/upload/')
-        ? u.replace(
-          '/video/upload/',
-          '/video/upload/e_volume:mute,c_limit,w_1280,fps_30,br_2m,q_auto:good,vc_h264,f_mp4/'
-        )
-        : u;
-    }
 
-    // --- Lightbox controls ---
+  <script>
+    // --- Lightbox controls (now use dataset.large which points to local large or CDN large) ---
     const lb = document.getElementById('lightbox');
     const lbBody = lb.querySelector('.lightbox-body');
     const lbClose = lb.querySelector('.lightbox-close');
@@ -227,14 +219,14 @@
         const big = new Image();
         big.className = 'lightbox-media';
         big.alt = el.alt || "";
-        big.src = largeImageUrl(el.src);
+        big.src = el.dataset.large || el.src;
         lbBody.appendChild(big);
       } else if (el.tagName === 'VIDEO') {
         const v = document.createElement('video');
         v.className = 'lightbox-media';
         v.controls = true; v.autoplay = true; v.playsInline = true;
         v.muted = false; v.loop = false; v.preload = 'metadata';
-        v.src = largeVideoUrl(el.currentSrc || el.src);
+        v.src = el.dataset.large || el.currentSrc || el.src;
         lbBody.appendChild(v);
       }
 
@@ -245,7 +237,6 @@
     }
 
     function closeLightbox() {
-      // stop any playing media
       const v = lbBody.querySelector('video');
       if (v) { try { v.pause(); } catch { } }
       lbBody.innerHTML = "";
@@ -273,8 +264,23 @@
     });
   </script>
 
-
-
+  <!-- ✨ cursor sparkle (unchanged) -->
+  <script>
+    (function () {
+      const canHover = matchMedia('(hover:hover)').matches;
+      const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!canHover || reduced) return;
+      const SHAPES = ['✧', '✦', '★', '✺']; let last = 0; const MIN_MS = 40;
+      document.addEventListener('mousemove', (e) => {
+        const now = performance.now(); if (now - last < MIN_MS) return; last = now;
+        const s = document.createElement('span'); s.className = 'spark';
+        s.textContent = SHAPES[Math.floor(Math.random() * SHAPES.length)];
+        const rot = (Math.random() * 20 - 10).toFixed(1); const scale = 0.9 + Math.random() * 0.3;
+        s.style.left = e.clientX + 'px'; s.style.top = e.clientY + 'px';
+        s.style.transform = `translate(-50%, -50%) scale(${scale}) rotate(${rot}deg)`;
+        document.body.appendChild(s); setTimeout(() => s.remove(), 750);
+      }, { passive: true });
+    })();
+  </script>
 </body>
-
 </html>
