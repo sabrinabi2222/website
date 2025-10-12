@@ -16,217 +16,59 @@
     <nav>
       <a href="index.html">About</a>
       <a href="sewing.html">Sewing</a>
-      <a href="photography.html">Photography</a>
+      <a href="photography.html" aria-current="page">Photography</a>
     </nav>
   </header>
-  <main>
 
+  <main>
     <div id="projects">
       <p class="muted">Loading…</p>
     </div>
   </main>
 
+  <!-- ========= Local / CDN toggle + helpers ========= -->
   <script>
-    const videoObserver = new IntersectionObserver((entries) => {
-      for (const e of entries) {
-        const v = e.target;
-        if (e.isIntersecting) {
-          v.play().catch(() => { });
-        } else {
-          v.pause();
-          v.currentTime = 0;
-        }
-      }
-    }, { threshold: 0.6 });
+    const USE_LOCAL = true; // set to false if you want to fall back to Cloudinary
 
-    function displayImageUrl(u) {
-      return u.includes("/image/upload/")
-        ? u.replace("/image/upload/", "/image/upload/f_auto,q_auto/")
+    function safeKey(u) {
+      if (!u || !u.includes('/upload/')) return '';
+      let tail = u.split('/upload/')[1].split('?')[0]; // after /upload/
+      tail = tail.replace(/\.[^.]+$/, '');             // strip ext
+      return tail.replace(/[\/\\]/g, '-');             // folders -> hyphens
+    }
+
+    function localPaths(u, type) {
+      const k = safeKey(u);
+      if (!k) return {};
+      if (type === 'image') {
+        return {
+          grid:  `media/photos/grid/${k}.jpg`,
+          large: `media/photos/large/${k}.jpg`,
+        };
+      } else if (type === 'video') {
+        return {
+          grid:   `media/videos/grid/${k}.mp4`,
+          large:  `media/videos/large/${k}.mp4`,
+          poster: `media/videos/posters/${k}.jpg`,
+        };
+      }
+      return {};
+    }
+
+    // Cloudinary fallbacks
+    function cdnImage(u, kind) {
+      return u.includes('/image/upload/')
+        ? u.replace('/image/upload/', '/image/upload/f_auto,q_auto,' + (kind === 'large' ? 'w_1600' : 'w_900') + '/')
         : u;
     }
-    function displayVideoUrl(u, w = 720) {
-      return u.includes('/video/upload/')
-        ? u.replace(
-          '/video/upload/',
-          `/video/upload/e_volume:mute,c_limit,w_${w},fps_30,br_1m,q_auto:good,vc_h264,f_mp4/`
-        )
-        : u;
+    function cdnVideo(u, kind) {
+      if (!u.includes('/video/upload/')) return u;
+      const tx = (kind === 'large')
+        ? 'e_volume:mute,c_limit,w_1280,fps_30,br_2m,q_auto:good,vc_h264,f_mp4'
+        : 'e_volume:mute,c_limit,w_720,fps_30,br_1m,q_auto:good,vc_h264,f_mp4';
+      return u.replace('/video/upload/', '/video/upload/' + tx + '/');
     }
-    function posterFromCloudinaryVideo(u, w = 720) {
+    function cdnPoster(u) {
       if (!u.includes('/video/upload/')) return '';
-      const [left, right] = u.split('/video/upload/');
-      const parts = right.split('/');
-      const last = parts.pop();
-      const baseNoQuery = last.split('?')[0];
-      const basename = baseNoQuery.replace(/\.[^.]+$/, '');
-      const path = parts.length ? parts.join('/') + '/' : '';
-      return `${left}/video/upload/so_1,c_limit,w_${w},f_jpg,q_auto/${path}${basename}.jpg`;
-    }
-
-    (async function () {
-      const res = await fetch('photography.json', { cache: 'no-store' });
-      const data = await res.json();
-
-      const projectsData = data.projects || {};
-      const order = data.order || Object.keys(projectsData);
-
-      const container = document.getElementById('projects');
-      container.innerHTML = '';
-
-      for (const projectKey of order) {
-        const meta = projectsData[projectKey] || {};
-        let items = meta.items || [];
-        const title = meta.title || projectKey;
-        const caption = meta.caption || '';
-
-        // Sort misc newest → oldest
-        //if (projectKey === "misc") {
-        //  items = items.sort((a, b) => b.url.localeCompare(a.url));
-        //}
-
-        const section = document.createElement('section');
-        section.className = 'project';
-
-        const header = document.createElement('header');
-        header.className = 'project-header';
-
-        const h2 = document.createElement('h2');
-        h2.textContent = title;
-        header.appendChild(h2);
-
-        if (caption) {
-          const p = document.createElement('p');
-          p.className = 'project-caption';
-          p.textContent = caption;
-          header.appendChild(p);
-        }
-
-        section.appendChild(header);
-
-        const grid = document.createElement('div');
-        grid.className = 'gallery gallery--photography';
-        ;
-
-        for (const item of items) {
-          const card = document.createElement('figure');
-          card.className = 'card';
-          card.setAttribute('data-label', title); // <-- add this line
-
-
-          if (item.type === 'video') {
-            const v = document.createElement('video');
-            v.className = 'hover-video';
-            v.muted = true; v.playsInline = true; v.loop = true; v.preload = 'metadata';
-            v.controls = false;
-            v.poster = posterFromCloudinaryVideo(item.url);
-            v.src = displayVideoUrl(item.url);
-            v.addEventListener('loadedmetadata', () => {
-              if (v.videoWidth > v.videoHeight) {
-                card.classList.add('landscape'); // landscape videos get wider
-              }
-            });
-            card.appendChild(v);
-            videoObserver.observe(v);
-          } else {
-            const img = document.createElement('img');
-            img.loading = 'lazy';
-            img.src = displayImageUrl(item.url);
-            img.alt = projectKey;
-            img.onload = () => {
-              if (img.naturalWidth > img.naturalHeight) {
-                card.classList.add('landscape'); // landscape photos get wider
-              }
-            };
-            card.appendChild(img);
-          }
-
-          grid.appendChild(card);
-        }
-
-
-        section.appendChild(grid);
-        container.appendChild(section);
-      }
-    })();
-  </script>
-
-  <!-- Lightbox -->
-  <div id="lightbox" class="lightbox" hidden aria-hidden="true">
-    <div class="lightbox-backdrop"></div>
-    <div class="lightbox-dialog" role="dialog" aria-modal="true" aria-label="Media preview">
-      <button class="lightbox-close" aria-label="Close">×</button>
-      <div class="lightbox-body"></div>
-    </div>
-  </div>
-  <script>
-    function largeImageUrl(u) {
-      return u.includes("/image/upload/")
-        ? u.replace("/image/upload/", "/image/upload/f_auto,q_auto,w_1600/")
-        : u;
-    }
-    function largeVideoUrl(u) {
-      return u.includes('/video/upload/')
-        ? u.replace(
-          '/video/upload/',
-          '/video/upload/e_volume:mute,c_limit,w_1280,fps_30,br_2m,q_auto:good,vc_h264,f_mp4/'
-        )
-        : u;
-    }
-
-    const lb = document.getElementById('lightbox');
-    const lbBody = lb.querySelector('.lightbox-body');
-    const lbClose = lb.querySelector('.lightbox-close');
-
-    function openLightboxFrom(el) {
-      lbBody.innerHTML = "";
-      document.querySelectorAll('.gallery video').forEach(v => v.pause());
-
-      if (el.tagName === 'IMG') {
-        const big = new Image();
-        big.className = 'lightbox-media';
-        big.alt = el.alt || "";
-        big.src = largeImageUrl(el.src);
-        lbBody.appendChild(big);
-      } else if (el.tagName === 'VIDEO') {
-        const v = document.createElement('video');
-        v.className = 'lightbox-media';
-        v.controls = true; v.autoplay = true; v.playsInline = true;
-        v.muted = false; v.loop = false; v.preload = 'metadata';
-        v.src = largeVideoUrl(el.currentSrc || el.src);
-        lbBody.appendChild(v);
-      }
-
-      lb.hidden = false;
-      lb.setAttribute('aria-hidden', 'false');
-      document.body.style.overflow = 'hidden';
-      lbClose.focus();
-    }
-
-    function closeLightbox() {
-      const v = lbBody.querySelector('video');
-      if (v) { try { v.pause(); } catch { } }
-      lbBody.innerHTML = "";
-      lb.hidden = true;
-      lb.setAttribute('aria-hidden', 'true');
-      document.body.style.overflow = '';
-    }
-
-    document.addEventListener('click', (e) => {
-      const media = e.target.closest('.gallery img, .gallery video');
-      if (media) {
-        e.preventDefault();
-        openLightboxFrom(media);
-      }
-    });
-
-    lbClose.addEventListener('click', closeLightbox);
-    lb.addEventListener('click', (e) => {
-      if (e.target.classList.contains('lightbox-backdrop')) closeLightbox();
-    });
-    document.addEventListener('keydown', (e) => {
-      if (!lb.hidden && (e.key === 'Escape' || e.key === 'Esc')) closeLightbox();
-    });
-  </script>
-</body>
-
-</html>
+      const [L, R] = u.split('/video/upload/');
+      const base =
