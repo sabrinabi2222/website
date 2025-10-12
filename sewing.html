@@ -211,39 +211,48 @@
     const lbClose = lb.querySelector('.lightbox-close');
 
     function openLightboxFrom(el) {
-      lbBody.innerHTML = "";
-      // pause grid videos so audio doesn't clash
-      document.querySelectorAll('.gallery video').forEach(v => v.pause());
+    lbBody.innerHTML = "";
+    // pause grid videos so audio doesn't clash
+    document.querySelectorAll('.gallery video').forEach(v => v.pause());
 
-      if (el.tagName === 'IMG') {
-        const big = new Image();
-        big.className = 'lightbox-media';
-        big.alt = el.alt || "";
-        big.src = el.dataset.large || el.src;
-        lbBody.appendChild(big);
-      } else if (el.tagName === 'VIDEO') {
-        const v = document.createElement('video');
-        v.className = 'lightbox-media';
-        v.controls = true; v.autoplay = true; v.playsInline = true;
-        v.muted = false; v.loop = false; v.preload = 'metadata';
-        v.src = el.dataset.large || el.currentSrc || el.src;
-        lbBody.appendChild(v);
-      }
-
-      lb.hidden = false;
-      lb.setAttribute('aria-hidden', 'false');
-      document.body.style.overflow = 'hidden';
-      lbClose.focus();
+    if (el.tagName === 'IMG') {
+      const big = new Image();
+      big.className = 'lightbox-media';
+      big.alt = el.alt || "";
+      big.src = el.dataset.large || el.src;
+      lbBody.appendChild(big);
+    } else if (el.tagName === 'VIDEO') {
+      const v = document.createElement('video');
+      v.className = 'lightbox-media';
+      v.controls = true; 
+      v.autoplay = true; 
+      v.playsInline = true;
+      v.muted = false; 
+      v.loop = false; 
+      v.preload = 'metadata';
+      v.src = el.dataset.large || el.currentSrc || el.src;
+      lbBody.appendChild(v);
     }
 
-    function closeLightbox() {
-      const v = lbBody.querySelector('video');
-      if (v) { try { v.pause(); } catch { } }
-      lbBody.innerHTML = "";
-      lb.hidden = true;
-      lb.setAttribute('aria-hidden', 'true');
-      document.body.style.overflow = '';
-    }
+    lb.hidden = false;
+    lb.setAttribute('aria-hidden', 'false');
+
+    // 👇 Add this new line:
+    document.body.classList.add('lb-open'); 
+
+    lbClose.focus();
+  }
+
+  function closeLightbox() {
+    const v = lbBody.querySelector('video');
+    if (v) { try { v.pause(); } catch { } }
+    lbBody.innerHTML = "";
+    lb.hidden = true;
+    lb.setAttribute('aria-hidden', 'true');
+
+    // 👇 Add this new line:
+    document.body.classList.remove('lb-open');
+  }
 
     // open on click of any gallery image/video (event delegation)
     document.addEventListener('click', (e) => {

@@ -435,3 +435,77 @@ h1 {
   .door-stack .door .door-emoji{ font-size: 26px; }
 }
 
+/* Lightbox base layout */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+}
+
+.lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+}
+
+.lightbox-dialog {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  /* breathing room around media; uses small of vw/px for mobile/desktop */
+  padding: min(4vw, 24px);
+}
+
+.lightbox-body {
+  /* keep media inside the viewport with padding accounted for */
+  max-width: min(92vw, 1400px);
+  max-height: calc(100dvh - 2 * min(4vw, 24px));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; /* no accidental scrollbars on the wrapper */
+}
+
+.lightbox-media {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  display: block;
+  object-fit: contain;   /* critical: contain within the box */
+  border-radius: 12px;
+  background: #000;      /* looks nicer for videos with odd AR */
+}
+
+/* Optional: if a tall portrait exceeds available height, allow scroll on the body instead of clipping */
+@supports (overflow: clip) {
+  .lightbox-body { overflow: clip; }
+}
+body.lb-open {
+  overflow: hidden;
+}
+/* Make every gallery card fill the grid cell and make its media responsive */
+.gallery .card {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.gallery img,
+.gallery video {
+  width: 100%;
+  height: auto;         /* keep natural AR */
+  display: block;
+  /* If you prefer consistent covers, swap to object-fit:cover; but 'contain' is usually nicer for craft photos */
+  object-fit: contain;
+}
+
+/* If your grid is too “tight” for wides, you can slightly bump the min column size */
+.gallery.gallery--retro {
+  /* tune the 240px as you like; larger -> bigger average tile size */
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px; /* or your existing gap */
+}
