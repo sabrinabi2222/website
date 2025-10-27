@@ -1,5 +1,27 @@
 {
   "projects": {
+    "NewPencilPouch": {
+      "items": [
+        {
+          "url": "media/photos/grid/IMG_3093.jpg",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/IMG_3046.mp4",
+          "type": "video"
+        },
+        {
+          "url": "media/photos/grid/IMG_3090.mp4",
+          "type": "video"
+        },
+        {
+          "url": "media/photos/grid/IMG_3091.mp4",
+          "type": "video"
+        }
+      ],
+      "title": "newpencilpouch",
+      "caption": "Pencil pouch from Nai Nai's fabrics. For me!"
+    },
     "FirstToteBag": {
       "items": [
         {
@@ -594,6 +616,7 @@
     }
   },
   "order": [
+    "NewPencilPouch",
     "MartinMomPotHolder",
     "JuneAndElaineOutfit",
     "NaiNaiTote",
