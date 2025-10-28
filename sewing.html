@@ -50,7 +50,7 @@
 
     // --- load local JSON + render projects ---
     (async function () {
-      const res = await fetch('sewing.json', { cache: 'no-store' });
+      const res = await fetch('sewing.local.json', { cache: 'no-store' });
       const data = await res.json();
 
       const projectsData = data.projects || {};
@@ -93,8 +93,7 @@
             v.loop = true;
             v.preload = 'metadata';
             v.controls = false;
-            v.src = item.url;             // local grid mp4
-            v.dataset.large = item.large; // local large mp4
+            v.src = item.url;
 
             v.addEventListener('loadedmetadata', () => {
               if (v.videoWidth && v.videoHeight) {
@@ -107,9 +106,8 @@
           } else {
             const img = document.createElement('img');
             img.loading = 'lazy';
-            img.src = item.url;             // local grid jpg
+            img.src = item.url;
             img.alt = projectKey;
-            img.dataset.large = item.large; // local large jpg
             card.appendChild(img);
           }
 
@@ -122,76 +120,6 @@
         container.appendChild(section);
       }
     })();
-  </script>
-
-  <!-- Lightbox -->
-  <div id="lightbox" class="lightbox" hidden aria-hidden="true">
-    <div class="lightbox-backdrop"></div>
-    <div class="lightbox-dialog" role="dialog" aria-modal="true" aria-label="Media preview">
-      <button class="lightbox-close" aria-label="Close">×</button>
-      <div class="lightbox-body"></div>
-    </div>
-  </div>
-
-  <script>
-    // --- Lightbox controls (use dataset.large only) ---
-    const lb = document.getElementById('lightbox');
-    const lbBody = lb.querySelector('.lightbox-body');
-    const lbClose = lb.querySelector('.lightbox-close');
-
-    function openLightboxFrom(el) {
-      lbBody.innerHTML = "";
-      document.querySelectorAll('.gallery video').forEach(v => v.pause());
-
-      if (el.tagName === 'IMG') {
-        const big = new Image();
-        big.className = 'lightbox-media';
-        big.alt = el.alt || "";
-        big.src = el.dataset.large || el.src;
-        lbBody.appendChild(big);
-      } else if (el.tagName === 'VIDEO') {
-        const v = document.createElement('video');
-        v.className = 'lightbox-media';
-        v.controls = true;
-        v.autoplay = true;
-        v.playsInline = true;
-        v.muted = false;
-        v.loop = false;
-        v.preload = 'metadata';
-        v.src = el.dataset.large || el.currentSrc || el.src;
-        lbBody.appendChild(v);
-      }
-
-      lb.hidden = false;
-      lb.setAttribute('aria-hidden', 'false');
-      document.body.classList.add('lb-open');
-      lbClose.focus();
-    }
-
-    function closeLightbox() {
-      const v = lbBody.querySelector('video');
-      if (v) try { v.pause(); } catch {}
-      lbBody.innerHTML = "";
-      lb.hidden = true;
-      lb.setAttribute('aria-hidden', 'true');
-      document.body.classList.remove('lb-open');
-    }
-
-    document.addEventListener('click', (e) => {
-      const media = e.target.closest('.gallery img, .gallery video');
-      if (media) {
-        e.preventDefault();
-        openLightboxFrom(media);
-      }
-    });
-
-    lbClose.addEventListener('click', closeLightbox);
-    lb.addEventListener('click', (e) => {
-      if (e.target.classList.contains('lightbox-backdrop')) closeLightbox();
-    });
-    document.addEventListener('keydown', (e) => {
-      if (!lb.hidden && (e.key === 'Escape' || e.key === 'Esc')) closeLightbox();
-    });
   </script>
 
   <!-- ✨ cursor sparkle (unchanged) -->
