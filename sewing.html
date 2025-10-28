@@ -50,7 +50,7 @@
 
     // --- load local JSON + render projects ---
     (async function () {
-      const res = await fetch('sewing.local.json', { cache: 'no-store' });
+      const res = await fetch('sewing.json', { cache: 'no-store' });
       const data = await res.json();
 
       const projectsData = data.projects || {};
