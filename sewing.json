@@ -4,19 +4,23 @@
       "items": [
         {
           "url": "media/photos/grid/IMG_3093.jpg",
-          "type": "image"
+          "type": "image",
+          "large": "media/photos/large/IMG_3093.jpg"
         },
         {
           "url": "media/videos/grid/IMG_3046.mp4",
-          "type": "video"
+          "type": "video",
+          "large": "media/videos/large/IMG_3046.mp4"
         },
         {
           "url": "media/videos/grid/IMG_3090.mp4",
-          "type": "video"
+          "type": "video",
+          "large": "media/videos/large/IMG_3090.mp4"
         },
         {
           "url": "media/videos/grid/IMG_3091.mp4",
-          "type": "video"
+          "type": "video",
+          "large": "media/videos/large/IMG_3091.mp4"
         }
       ],
       "title": "newpencilpouch",
@@ -25,12 +29,14 @@
     "FirstToteBag": {
       "items": [
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984968/Sewing/bjs4g2yqhqbcue93adbz.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984968-Sewing-bjs4g2yqhqbcue93adbz.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984968-Sewing-bjs4g2yqhqbcue93adbz.jpg"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984969/Sewing/tjhcxcriv8d2nzpzg3ep.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984969-Sewing-tjhcxcriv8d2nzpzg3ep.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984969-Sewing-tjhcxcriv8d2nzpzg3ep.jpg"
         }
       ],
       "title": "Firsttotebag",
@@ -39,8 +45,9 @@
     "BathroomCurtains": {
       "items": [
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984966/Sewing/icvzvh6iommh22tbrl17.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984966-Sewing-icvzvh6iommh22tbrl17.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984966-Sewing-icvzvh6iommh22tbrl17.jpg"
         }
       ],
       "title": "Bathroomcurtains",
@@ -49,8 +56,9 @@
     "WorkingonTamsMachine": {
       "items": [
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984965/Sewing/kmitbusldecgfd2jziw4.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984965-Sewing-kmitbusldecgfd2jziw4.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984965-Sewing-kmitbusldecgfd2jziw4.jpg"
         }
       ],
       "title": "Workingontamsmachine",
@@ -59,16 +67,19 @@
     "MartinMomPotHolder": {
       "items": [
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984960/Sewing/lmxzycbtukenprhw4ox2.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984960-Sewing-lmxzycbtukenprhw4ox2.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984960-Sewing-lmxzycbtukenprhw4ox2.jpg"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984964/Sewing/kez1sngwkaxvtfdyauel.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984964-Sewing-kez1sngwkaxvtfdyauel.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984964-Sewing-kez1sngwkaxvtfdyauel.jpg"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/video/upload/v1755984962/Sewing/d6ohmo1u8kyoqbd8ut6c.mov",
-          "type": "video"
+          "url": "media/videos/grid/v1755984962-Sewing-d6ohmo1u8kyoqbd8ut6c.mp4",
+          "type": "video",
+          "large": "media/videos/large/v1755984962-Sewing-d6ohmo1u8kyoqbd8ut6c.mp4"
         }
       ],
       "title": "Martinmompotholder",
@@ -77,8 +88,9 @@
     "HalfApron": {
       "items": [
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984959/Sewing/qnd48sdztmc6sce3ftrq.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984959-Sewing-qnd48sdztmc6sce3ftrq.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984959-Sewing-qnd48sdztmc6sce3ftrq.jpg"
         }
       ],
       "title": "Halfapron",
@@ -87,32 +99,39 @@
     "MontanaPinkOutfit": {
       "items": [
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984949/Sewing/rh2wqpobkzx8cumolbfx.jpg",
-          "type": "image"
+          "url": "media/photos/grid/v1755984949-Sewing-rh2wqpobkzx8cumolbfx.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984949-Sewing-rh2wqpobkzx8cumolbfx.jpg"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984951/Sewing/wye2junbgirma3ymza41.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984951-Sewing-wye2junbgirma3ymza41.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984951-Sewing-wye2junbgirma3ymza41.jpg"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984952/Sewing/dknskmcfidzaxizx9oyu.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984952-Sewing-dknskmcfidzaxizx9oyu.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984952-Sewing-dknskmcfidzaxizx9oyu.jpg"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984954/Sewing/mx6keua0fjxqquoimlnb.jpg",
-          "type": "image"
+          "url": "media/photos/grid/v1755984954-Sewing-mx6keua0fjxqquoimlnb.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984954-Sewing-mx6keua0fjxqquoimlnb.jpg"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984955/Sewing/auwciyrrsaig7juknlu3.jpg",
-          "type": "image"
+          "url": "media/photos/grid/v1755984955-Sewing-auwciyrrsaig7juknlu3.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984955-Sewing-auwciyrrsaig7juknlu3.jpg"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984957/Sewing/d21mlucrmenjatyq1djk.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984957-Sewing-d21mlucrmenjatyq1djk.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984957-Sewing-d21mlucrmenjatyq1djk.jpg"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984957/Sewing/wmuwr82g0dmjxndz7ywh.jpg",
-          "type": "image"
+          "url": "media/photos/grid/v1755984957-Sewing-wmuwr82g0dmjxndz7ywh.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984957-Sewing-wmuwr82g0dmjxndz7ywh.jpg"
         }
       ],
       "title": "Montanapinkoutfit",
@@ -121,8 +140,9 @@
     "BaileyPotHolder": {
       "items": [
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/video/upload/v1755984947/Sewing/pbtk547qlcxquvm2alqi.mov",
-          "type": "video"
+          "url": "media/videos/grid/v1755984947-Sewing-pbtk547qlcxquvm2alqi.mp4",
+          "type": "video",
+          "large": "media/videos/large/v1755984947-Sewing-pbtk547qlcxquvm2alqi.mp4"
         }
       ],
       "title": "Baileypotholder",
@@ -131,8 +151,9 @@
     "FirstSewingOrganizer": {
       "items": [
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/video/upload/v1755984943/Sewing/jmslno22isdfhvrcyzso.mov",
-          "type": "video"
+          "url": "media/videos/grid/v1755984943-Sewing-jmslno22isdfhvrcyzso.mp4",
+          "type": "video",
+          "large": "media/videos/large/v1755984943-Sewing-jmslno22isdfhvrcyzso.mp4"
         }
       ],
       "title": "Firstsewingorganizer",
@@ -141,12 +162,14 @@
     "CadenPintHolder": {
       "items": [
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/video/upload/v1755984936/Sewing/re0xokg2garruvcgoyql.mov",
-          "type": "video"
+          "url": "media/videos/grid/v1755984936-Sewing-re0xokg2garruvcgoyql.mp4",
+          "type": "video",
+          "large": "media/videos/large/v1755984936-Sewing-re0xokg2garruvcgoyql.mp4"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/video/upload/v1755984940/Sewing/jluyofsmzv9v11jr4vgx.mov",
-          "type": "video"
+          "url": "media/videos/grid/v1755984940-Sewing-jluyofsmzv9v11jr4vgx.mp4",
+          "type": "video",
+          "large": "media/videos/large/v1755984940-Sewing-jluyofsmzv9v11jr4vgx.mp4"
         }
       ],
       "title": "Cadenpintholder",
@@ -155,12 +178,14 @@
     "KhrisKindleCase": {
       "items": [
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984931/Sewing/mnf2o0v7gf456ihj3hzh.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984931-Sewing-mnf2o0v7gf456ihj3hzh.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984931-Sewing-mnf2o0v7gf456ihj3hzh.jpg"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/video/upload/v1755984929/Sewing/hrs52cqgfzewhvqskbpq.mov",
-          "type": "video"
+          "url": "media/videos/grid/v1755984929-Sewing-hrs52cqgfzewhvqskbpq.mp4",
+          "type": "video",
+          "large": "media/videos/large/v1755984929-Sewing-hrs52cqgfzewhvqskbpq.mp4"
         }
       ],
       "title": "Khriskindlecase",
@@ -169,12 +194,14 @@
     "ClothPad": {
       "items": [
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/video/upload/v1755984919/Sewing/xgixdoo1zj1tgqchfqst.mov",
-          "type": "video"
+          "url": "media/videos/grid/v1755984919-Sewing-xgixdoo1zj1tgqchfqst.mp4",
+          "type": "video",
+          "large": "media/videos/large/v1755984919-Sewing-xgixdoo1zj1tgqchfqst.mp4"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/video/upload/v1755984925/Sewing/fvxpat0otc95oinsnno9.mov",
-          "type": "video"
+          "url": "media/videos/grid/v1755984925-Sewing-fvxpat0otc95oinsnno9.mp4",
+          "type": "video",
+          "large": "media/videos/large/v1755984925-Sewing-fvxpat0otc95oinsnno9.mp4"
         }
       ],
       "title": "Clothpad",
@@ -183,12 +210,14 @@
     "PurpleFlowerToteBag": {
       "items": [
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984916/Sewing/tg9jm28xnrivesefdxzs.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984916-Sewing-tg9jm28xnrivesefdxzs.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984916-Sewing-tg9jm28xnrivesefdxzs.jpg"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/video/upload/v1755984913/Sewing/xfinlh1vcvjkkwe5wss1.mov",
-          "type": "video"
+          "url": "media/videos/grid/v1755984913-Sewing-xfinlh1vcvjkkwe5wss1.mp4",
+          "type": "video",
+          "large": "media/videos/large/v1755984913-Sewing-xfinlh1vcvjkkwe5wss1.mp4"
         }
       ],
       "title": "Purpleflowertotebag",
@@ -197,12 +226,14 @@
     "FirstThrowPillow": {
       "items": [
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984909/Sewing/my1rrggrtqcmey2edd6n.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984909-Sewing-my1rrggrtqcmey2edd6n.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984909-Sewing-my1rrggrtqcmey2edd6n.jpg"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984910/Sewing/dhkrk5a68vpu6bjeqame.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984910-Sewing-dhkrk5a68vpu6bjeqame.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984910-Sewing-dhkrk5a68vpu6bjeqame.jpg"
         }
       ],
       "title": "Firstthrowpillow",
@@ -211,8 +242,9 @@
     "SecondSewingSetup": {
       "items": [
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/video/upload/v1755984907/Sewing/ivtfxn5qy3j3ozwx6nzi.mov",
-          "type": "video"
+          "url": "media/videos/grid/v1755984907-Sewing-ivtfxn5qy3j3ozwx6nzi.mp4",
+          "type": "video",
+          "large": "media/videos/large/v1755984907-Sewing-ivtfxn5qy3j3ozwx6nzi.mp4"
         }
       ],
       "title": "Secondsewingsetup",
@@ -221,28 +253,34 @@
     "MoonHalloweenToys": {
       "items": [
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984896/Sewing/nznvhorcrapprnndo5j8.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984896-Sewing-nznvhorcrapprnndo5j8.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984896-Sewing-nznvhorcrapprnndo5j8.jpg"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984897/Sewing/sa4nby8w9ivof4jz3cja.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984897-Sewing-sa4nby8w9ivof4jz3cja.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984897-Sewing-sa4nby8w9ivof4jz3cja.jpg"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984898/Sewing/m9e2g42iadht6suadxrf.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984898-Sewing-m9e2g42iadht6suadxrf.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984898-Sewing-m9e2g42iadht6suadxrf.jpg"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984899/Sewing/utzkbslmvevx7hvwtzah.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984899-Sewing-utzkbslmvevx7hvwtzah.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984899-Sewing-utzkbslmvevx7hvwtzah.jpg"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984904/Sewing/okpirxs8lpivw2xrrqgp.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984904-Sewing-okpirxs8lpivw2xrrqgp.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984904-Sewing-okpirxs8lpivw2xrrqgp.jpg"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/video/upload/v1755984902/Sewing/irmk5e05yv9ou7kistkx.mov",
-          "type": "video"
+          "url": "media/videos/grid/v1755984902-Sewing-irmk5e05yv9ou7kistkx.mp4",
+          "type": "video",
+          "large": "media/videos/large/v1755984902-Sewing-irmk5e05yv9ou7kistkx.mp4"
         }
       ],
       "title": "Moonhalloweentoys",
@@ -251,12 +289,14 @@
     "GreenToteBag": {
       "items": [
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984893/Sewing/mwbwdsc8geghec7yb6xn.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984893-Sewing-mwbwdsc8geghec7yb6xn.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984893-Sewing-mwbwdsc8geghec7yb6xn.jpg"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984894/Sewing/zlulebozzkbklccfengl.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984894-Sewing-zlulebozzkbklccfengl.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984894-Sewing-zlulebozzkbklccfengl.jpg"
         }
       ],
       "title": "Greentotebag",
@@ -265,16 +305,19 @@
     "FirstRiceHeatingPad": {
       "items": [
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984888/Sewing/r76rv7zazf3chmgu9bml.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984888-Sewing-r76rv7zazf3chmgu9bml.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984888-Sewing-r76rv7zazf3chmgu9bml.jpg"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984889/Sewing/nerd6hq8vkirsprvorjn.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984889-Sewing-nerd6hq8vkirsprvorjn.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984889-Sewing-nerd6hq8vkirsprvorjn.jpg"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984891/Sewing/xh8abs9blzc5vlvkcbnm.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984891-Sewing-xh8abs9blzc5vlvkcbnm.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984891-Sewing-xh8abs9blzc5vlvkcbnm.jpg"
         }
       ],
       "title": "Firstriceheatingpad",
@@ -283,12 +326,14 @@
     "BasketLiners": {
       "items": [
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984885/Sewing/iijpqz10flvanvvdqrv1.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984885-Sewing-iijpqz10flvanvvdqrv1.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984885-Sewing-iijpqz10flvanvvdqrv1.jpg"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984886/Sewing/wj6erof58ksrub7ngjpi.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984886-Sewing-wj6erof58ksrub7ngjpi.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984886-Sewing-wj6erof58ksrub7ngjpi.jpg"
         }
       ],
       "title": "Basketliners",
@@ -297,16 +342,19 @@
     "NaiNaiTote": {
       "items": [
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984883/Sewing/ttj3oasn86ujzngs8wlo.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984883-Sewing-ttj3oasn86ujzngs8wlo.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984883-Sewing-ttj3oasn86ujzngs8wlo.jpg"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984884/Sewing/wxiujnjpkdespjfryoah.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984884-Sewing-wxiujnjpkdespjfryoah.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984884-Sewing-wxiujnjpkdespjfryoah.jpg"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/video/upload/v1755984881/Sewing/b0hldqnqocp5jqxkhuif.mov",
-          "type": "video"
+          "url": "media/videos/grid/v1755984881-Sewing-b0hldqnqocp5jqxkhuif.mp4",
+          "type": "video",
+          "large": "media/videos/large/v1755984881-Sewing-b0hldqnqocp5jqxkhuif.mp4"
         }
       ],
       "title": "Nainaitote",
@@ -315,8 +363,9 @@
     "CadenAndMcbreenGifts": {
       "items": [
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/video/upload/v1755984877/Sewing/tbwzg5goh923maxgzvtu.mov",
-          "type": "video"
+          "url": "media/videos/grid/v1755984877-Sewing-tbwzg5goh923maxgzvtu.mp4",
+          "type": "video",
+          "large": "media/videos/large/v1755984877-Sewing-tbwzg5goh923maxgzvtu.mp4"
         }
       ],
       "title": "Cadenandmcbreengifts",
@@ -325,16 +374,19 @@
     "FirstPotHolder": {
       "items": [
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984870/Sewing/parmuils6lre0zsisbr5.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984870-Sewing-parmuils6lre0zsisbr5.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984870-Sewing-parmuils6lre0zsisbr5.jpg"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984871/Sewing/dujmyinb9cianoh6fmds.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984871-Sewing-dujmyinb9cianoh6fmds.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984871-Sewing-dujmyinb9cianoh6fmds.jpg"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/video/upload/v1755984867/Sewing/bmlfjeururadtvumugya.mov",
-          "type": "video"
+          "url": "media/videos/grid/v1755984867-Sewing-bmlfjeururadtvumugya.mp4",
+          "type": "video",
+          "large": "media/videos/large/v1755984867-Sewing-bmlfjeururadtvumugya.mp4"
         }
       ],
       "title": "Firstpotholder",
@@ -343,16 +395,19 @@
     "KevGrandmasTotes": {
       "items": [
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984859/Sewing/yqkjo0ujofoerd8ye3ja.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984859-Sewing-yqkjo0ujofoerd8ye3ja.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984859-Sewing-yqkjo0ujofoerd8ye3ja.jpg"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984861/Sewing/jojkbhfiwe5ppfwgmhyt.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984861-Sewing-jojkbhfiwe5ppfwgmhyt.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984861-Sewing-jojkbhfiwe5ppfwgmhyt.jpg"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984862/Sewing/nymldk4f1cttvy9usnde.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984862-Sewing-nymldk4f1cttvy9usnde.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984862-Sewing-nymldk4f1cttvy9usnde.jpg"
         }
       ],
       "title": "Kevgrandmastotes",
@@ -361,8 +416,9 @@
     "FirstPenHolder": {
       "items": [
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984857/Sewing/yzta07ngjtibm449ig2z.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984857-Sewing-yzta07ngjtibm449ig2z.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984857-Sewing-yzta07ngjtibm449ig2z.jpg"
         }
       ],
       "title": "Firstpenholder",
@@ -371,16 +427,19 @@
     "AshleyAndTariBag": {
       "items": [
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/video/upload/v1755984845/Sewing/ml9xxsjblivtrhasjrvd.mov",
-          "type": "video"
+          "url": "media/videos/grid/v1755984845-Sewing-ml9xxsjblivtrhasjrvd.mp4",
+          "type": "video",
+          "large": "media/videos/large/v1755984845-Sewing-ml9xxsjblivtrhasjrvd.mp4"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/video/upload/v1755984849/Sewing/wwbcpq8ht4ntdcjm7sbp.mov",
-          "type": "video"
+          "url": "media/videos/grid/v1755984849-Sewing-wwbcpq8ht4ntdcjm7sbp.mp4",
+          "type": "video",
+          "large": "media/videos/large/v1755984849-Sewing-wwbcpq8ht4ntdcjm7sbp.mp4"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/video/upload/v1755984854/Sewing/g1nwswyqjdosevx7pamd.mov",
-          "type": "video"
+          "url": "media/videos/grid/v1755984854-Sewing-g1nwswyqjdosevx7pamd.mp4",
+          "type": "video",
+          "large": "media/videos/large/v1755984854-Sewing-g1nwswyqjdosevx7pamd.mp4"
         }
       ],
       "title": "Ashleyandtaribag",
@@ -389,8 +448,9 @@
     "SecondWiderPenHolder": {
       "items": [
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984838/Sewing/kkmi7ov4fcrkupciisum.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984838-Sewing-kkmi7ov4fcrkupciisum.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984838-Sewing-kkmi7ov4fcrkupciisum.jpg"
         }
       ],
       "title": "Secondwiderpenholder",
@@ -399,16 +459,19 @@
     "GreenMoonToy": {
       "items": [
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/video/upload/v1755984829/Sewing/gbacbxtcspqucaszwct0.mov",
-          "type": "video"
+          "url": "media/videos/grid/v1755984829-Sewing-gbacbxtcspqucaszwct0.mp4",
+          "type": "video",
+          "large": "media/videos/large/v1755984829-Sewing-gbacbxtcspqucaszwct0.mp4"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/video/upload/v1755984831/Sewing/cha83q2mxf3fo01vax1m.mov",
-          "type": "video"
+          "url": "media/videos/grid/v1755984831-Sewing-cha83q2mxf3fo01vax1m.mp4",
+          "type": "video",
+          "large": "media/videos/large/v1755984831-Sewing-cha83q2mxf3fo01vax1m.mp4"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/video/upload/v1755984835/Sewing/dw9l9vv8faltuizp0yvb.mov",
-          "type": "video"
+          "url": "media/videos/grid/v1755984835-Sewing-dw9l9vv8faltuizp0yvb.mp4",
+          "type": "video",
+          "large": "media/videos/large/v1755984835-Sewing-dw9l9vv8faltuizp0yvb.mp4"
         }
       ],
       "title": "Greenmoontoy",
@@ -417,16 +480,19 @@
     "FirstTShirtProject": {
       "items": [
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984823/Sewing/ckchjqbmcz1erxxngga7.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984823-Sewing-ckchjqbmcz1erxxngga7.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984823-Sewing-ckchjqbmcz1erxxngga7.jpg"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984827/Sewing/htqvq0nr13reosd1gpmt.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984827-Sewing-htqvq0nr13reosd1gpmt.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984827-Sewing-htqvq0nr13reosd1gpmt.jpg"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/video/upload/v1755984826/Sewing/iyfwxlfli93riyvcarqq.mov",
-          "type": "video"
+          "url": "media/videos/grid/v1755984826-Sewing-iyfwxlfli93riyvcarqq.mp4",
+          "type": "video",
+          "large": "media/videos/large/v1755984826-Sewing-iyfwxlfli93riyvcarqq.mp4"
         }
       ],
       "title": "Firsttshirtproject",
@@ -435,8 +501,9 @@
     "FirstBabyOutfitFarmer": {
       "items": [
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984822/Sewing/ggytkhvffpnsg6bs6vx4.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984822-Sewing-ggytkhvffpnsg6bs6vx4.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984822-Sewing-ggytkhvffpnsg6bs6vx4.jpg"
         }
       ],
       "title": "Firstbabyoutfitfarmer",
@@ -445,12 +512,14 @@
     "BaileyRiceHeatingPad": {
       "items": [
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984819/Sewing/frljxalei5farpbpvyqr.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984819-Sewing-frljxalei5farpbpvyqr.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984819-Sewing-frljxalei5farpbpvyqr.jpg"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984820/Sewing/nem4s3jnnawzdnpkkedi.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984820-Sewing-nem4s3jnnawzdnpkkedi.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984820-Sewing-nem4s3jnnawzdnpkkedi.jpg"
         }
       ],
       "title": "Baileyriceheatingpad",
@@ -459,8 +528,9 @@
     "BobToteBag": {
       "items": [
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/video/upload/v1755984817/Sewing/ww4khxmzp0emvdrkuhbz.mov",
-          "type": "video"
+          "url": "media/videos/grid/v1755984817-Sewing-ww4khxmzp0emvdrkuhbz.mp4",
+          "type": "video",
+          "large": "media/videos/large/v1755984817-Sewing-ww4khxmzp0emvdrkuhbz.mp4"
         }
       ],
       "title": "Bobtotebag",
@@ -469,12 +539,14 @@
     "HarperOutfit": {
       "items": [
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/video/upload/v1755984813/Sewing/mdk6wg4ccwq5ofncolq8.mov",
-          "type": "video"
+          "url": "media/videos/grid/v1755984813-Sewing-mdk6wg4ccwq5ofncolq8.mp4",
+          "type": "video",
+          "large": "media/videos/large/v1755984813-Sewing-mdk6wg4ccwq5ofncolq8.mp4"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/video/upload/v1755984815/Sewing/yikequjsa2dkryyshmax.mov",
-          "type": "video"
+          "url": "media/videos/grid/v1755984815-Sewing-yikequjsa2dkryyshmax.mp4",
+          "type": "video",
+          "large": "media/videos/large/v1755984815-Sewing-yikequjsa2dkryyshmax.mp4"
         }
       ],
       "title": "Harperoutfit",
@@ -483,12 +555,14 @@
     "GreenPencilPouch": {
       "items": [
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984809/Sewing/obr90mvb0i7dx4an6q04.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984809-Sewing-obr90mvb0i7dx4an6q04.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984809-Sewing-obr90mvb0i7dx4an6q04.jpg"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984810/Sewing/iu1twu5andayj8f4wlyv.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984810-Sewing-iu1twu5andayj8f4wlyv.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984810-Sewing-iu1twu5andayj8f4wlyv.jpg"
         }
       ],
       "title": "Greenpencilpouch",
@@ -497,8 +571,9 @@
     "AmandaPencilPouch": {
       "items": [
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/video/upload/v1755988980/IMG_1061_ghwcb5.mov",
-          "type": "video"
+          "url": "media/videos/grid/v1755988980-IMG_1061_ghwcb5.mp4",
+          "type": "video",
+          "large": "media/videos/large/v1755988980-IMG_1061_ghwcb5.mp4"
         }
       ],
       "title": "Amandapencilpouch",
@@ -507,8 +582,9 @@
     "NewSewingMachine": {
       "items": [
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984807/Sewing/m4bvpsondjdp3j62dfaf.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984807-Sewing-m4bvpsondjdp3j62dfaf.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984807-Sewing-m4bvpsondjdp3j62dfaf.jpg"
         }
       ],
       "title": "Newsewingmachine",
@@ -517,12 +593,14 @@
     "XmasPotHolderForWork": {
       "items": [
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/video/upload/v1755984802/Sewing/kswfhoiegg1bpiko2riy.mov",
-          "type": "video"
+          "url": "media/videos/grid/v1755984802-Sewing-kswfhoiegg1bpiko2riy.mp4",
+          "type": "video",
+          "large": "media/videos/large/v1755984802-Sewing-kswfhoiegg1bpiko2riy.mp4"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/video/upload/v1755984805/Sewing/jeayluzk1arjyt3ig9f3.mov",
-          "type": "video"
+          "url": "media/videos/grid/v1755984805-Sewing-jeayluzk1arjyt3ig9f3.mp4",
+          "type": "video",
+          "large": "media/videos/large/v1755984805-Sewing-jeayluzk1arjyt3ig9f3.mp4"
         }
       ],
       "title": "Xmaspotholderforwork",
@@ -531,8 +609,9 @@
     "ElasticYellowPencilPouch": {
       "items": [
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/video/upload/v1755984799/Sewing/x1svqhy8wqe86awy92ci.mov",
-          "type": "video"
+          "url": "media/videos/grid/v1755984799-Sewing-x1svqhy8wqe86awy92ci.mp4",
+          "type": "video",
+          "large": "media/videos/large/v1755984799-Sewing-x1svqhy8wqe86awy92ci.mp4"
         }
       ],
       "title": "Elasticyellowpencilpouch",
@@ -541,24 +620,29 @@
     "BaileyPinaforeApron": {
       "items": [
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984791/Sewing/facrtt9tluk8udyga3y0.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984791-Sewing-facrtt9tluk8udyga3y0.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984791-Sewing-facrtt9tluk8udyga3y0.jpg"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984795/Sewing/nqvzhbthdvkcetuffztg.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984795-Sewing-nqvzhbthdvkcetuffztg.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984795-Sewing-nqvzhbthdvkcetuffztg.jpg"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984796/Sewing/nc9rxw5taygk3hsd27vm.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984796-Sewing-nc9rxw5taygk3hsd27vm.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984796-Sewing-nc9rxw5taygk3hsd27vm.jpg"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984797/Sewing/ldvxjhefmexvtcxpsz7n.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984797-Sewing-ldvxjhefmexvtcxpsz7n.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984797-Sewing-ldvxjhefmexvtcxpsz7n.jpg"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/video/upload/v1755984793/Sewing/lwvnufvvi04zc1pvpf8a.mov",
-          "type": "video"
+          "url": "media/videos/grid/v1755984793-Sewing-lwvnufvvi04zc1pvpf8a.mp4",
+          "type": "video",
+          "large": "media/videos/large/v1755984793-Sewing-lwvnufvvi04zc1pvpf8a.mp4"
         }
       ],
       "title": "Baileypinaforeapron",
@@ -567,12 +651,14 @@
     "MakeupBag": {
       "items": [
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/video/upload/v1755984784/Sewing/mefhxlue9mkwg0nbi3rb.mov",
-          "type": "video"
+          "url": "media/videos/grid/v1755984784-Sewing-mefhxlue9mkwg0nbi3rb.mp4",
+          "type": "video",
+          "large": "media/videos/large/v1755984784-Sewing-mefhxlue9mkwg0nbi3rb.mp4"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/video/upload/v1755984789/Sewing/rgdqaerzgnaa1q4pwo4b.mov",
-          "type": "video"
+          "url": "media/videos/grid/v1755984789-Sewing-rgdqaerzgnaa1q4pwo4b.mp4",
+          "type": "video",
+          "large": "media/videos/large/v1755984789-Sewing-rgdqaerzgnaa1q4pwo4b.mp4"
         }
       ],
       "title": "Makeupbag",
@@ -581,12 +667,14 @@
     "SewingBin": {
       "items": [
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984780/Sewing/p1cigtjtyrkdebkvfhld.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984780-Sewing-p1cigtjtyrkdebkvfhld.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984780-Sewing-p1cigtjtyrkdebkvfhld.jpg"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984781/Sewing/dkzepx3yrmf9ewnu9gnc.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984781-Sewing-dkzepx3yrmf9ewnu9gnc.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984781-Sewing-dkzepx3yrmf9ewnu9gnc.jpg"
         }
       ],
       "title": "Sewingbin",
@@ -595,20 +683,24 @@
     "JuneAndElaineOutfit": {
       "items": [
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984764/Sewing/mrztxlwoe12hnqanuzfa.heic",
-          "type": "image"
+          "url": "media/photos/grid/v1755984764-Sewing-mrztxlwoe12hnqanuzfa.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984764-Sewing-mrztxlwoe12hnqanuzfa.jpg"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/image/upload/v1755984766/Sewing/x20wfnbt1lqh9smrspt2.jpg",
-          "type": "image"
+          "url": "media/photos/grid/v1755984766-Sewing-x20wfnbt1lqh9smrspt2.jpg",
+          "type": "image",
+          "large": "media/photos/large/v1755984766-Sewing-x20wfnbt1lqh9smrspt2.jpg"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/video/upload/v1755984773/Sewing/mtwmrw3d3gt4mcxd20hd.mov",
-          "type": "video"
+          "url": "media/videos/grid/v1755984773-Sewing-mtwmrw3d3gt4mcxd20hd.mp4",
+          "type": "video",
+          "large": "media/videos/large/v1755984773-Sewing-mtwmrw3d3gt4mcxd20hd.mp4"
         },
         {
-          "url": "https://res.cloudinary.com/duhf1zypz/video/upload/v1755984778/Sewing/kjomfxpfzajh7qfbvcg9.mov",
-          "type": "video"
+          "url": "media/videos/grid/v1755984778-Sewing-kjomfxpfzajh7qfbvcg9.mp4",
+          "type": "video",
+          "large": "media/videos/large/v1755984778-Sewing-kjomfxpfzajh7qfbvcg9.mp4"
         }
       ],
       "title": "Juneandelaineoutfit",
