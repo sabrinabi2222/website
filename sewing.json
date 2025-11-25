@@ -1,5 +1,27 @@
 {
   "projects": {
+    "PJShorts": {
+      "items": [
+        {
+          "url": "media/photos/grid/630A3362.jpg",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/630A3382.jpg",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/630A3384.jpg",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/630A3385.jpg",
+          "type": "image"
+        }
+      ],
+      "title": "pjshorts",
+      "caption": "First PJ shorts <3"
+    },
     "NewPencilPouch": {
       "items": [
         {
@@ -708,6 +730,7 @@
     }
   },
   "order": [
+    "PJShorts",
     "NewPencilPouch",
     "MartinMomPotHolder",
     "JuneAndElaineOutfit",
