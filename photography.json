@@ -1,5 +1,75 @@
 {
   "projects": {
+    "junebirth": {
+      "items": [
+        {
+          "url": "media/photos/grid/630A2762.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/630A3285.jpg",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/630A3268.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/630A3297.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/630A2893.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/630A2892.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/630A2895.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/630A2883.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/630A3205.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/630A2867.jpg",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/630A3163.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/FullSizeRender.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/630A2848.jpg",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/630A2647.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/630A2829.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/630A2802.jpg",
+          "type": "image"
+        }
+      ],
+      "title": "June's arrival",
+      "caption": "Welcome to the world June!"
+    },
     "JuneReveal": {
       "items": [
         {
@@ -492,6 +562,7 @@
     }
   },
   "order": [
+    "junebirth",
     "KhrisAndAprilEngagement",
     "JuneReveal",
     "ToddFamPhotos",
