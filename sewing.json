@@ -1,5 +1,23 @@
 {
   "projects": {
+    "heatingPadXmas2025": {
+      "items": [
+        {
+          "url": "media/sewing/heatingPadXmas2025/IMG_3487.MOV",
+          "type": "video"
+        },
+        {
+          "url": "media/sewing/heatingPadXmas2025/IMG_3495.mov",
+          "type": "video"
+        },
+        {
+          "url": "media/sewing/heatingPadXmas2025/IMG_3499.jpg",
+          "type": "image"
+        }
+      ],
+      "title": "heatingpadxmas2025",
+      "caption": "Rice heating pads with washable outer cover for Christmas gifts"
+    },
     "PJShorts": {
       "items": [
         {
@@ -734,6 +752,7 @@
     }
   },
   "order": [
+    "heatingPadXmas2025",
     "PJShorts",
     "NewPencilPouch",
     "MartinMomPotHolder",
