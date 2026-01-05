@@ -13,10 +13,14 @@
         {
           "url": "media/sewing/heatingPadXmas2025/IMG_3499.jpg",
           "type": "image"
+        },
+        {
+          "url": "media/sewing/heatingPadXmas2025/IMG_3499.jpg",
+          "type": "image"
         }
       ],
       "title": "heatingpadxmas2025",
-      "caption": "Rice heating pads with washable outer cover for Christmas gifts"
+      "caption": "Rice heating pads with washable outer cover for Kevin's mom and Kathy"
     },
     "PJShorts": {
       "items": [
@@ -749,9 +753,32 @@
       ],
       "title": "Juneandelaineoutfit",
       "caption": "Bubble rompers for Elaine and June"
+    },
+    "SawyerApron": {
+      "items": [
+        {
+          "url": "media/sewing/SawyerApron/630A3797.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/sewing/SawyerApron/630A3800.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/sewing/SawyerApron/IMG_3477.MOV",
+          "type": "video"
+        },
+        {
+          "url": "media/sewing/SawyerApron/IMG_3478.MOV",
+          "type": "video"
+        }
+      ],
+      "title": "sawyerapron",
+      "caption": "Kids apron for Sawyer. Thanks Steph for adding his name!"
     }
   },
   "order": [
+    "SawyerApron",
     "heatingPadXmas2025",
     "PJShorts",
     "NewPencilPouch",
