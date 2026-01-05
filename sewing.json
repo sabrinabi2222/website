@@ -775,9 +775,36 @@
       ],
       "title": "sawyerapron",
       "caption": "Kids apron for Sawyer. Thanks Steph for adding his name!"
+    },
+    "GlassesCase": {
+      "items": [
+        {
+          "url": "media/sewing/GlassesCase/630A4088.mov",
+          "type": "video"
+        },
+        {
+          "url": "media/sewing/GlassesCase/630A4093.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/sewing/GlassesCase/IMG_3584.MOV",
+          "type": "video"
+        },
+        {
+          "url": "media/sewing/GlassesCase/IMG_4468.jpg",
+          "type": "image"
+        },
+        {
+          "url": "media/sewing/GlassesCase/IMG_4469.jpg",
+          "type": "image"
+        }
+      ],
+      "title": "glassescase",
+      "caption": "Glasses case for my dad and Kevin's dad"
     }
   },
   "order": [
+    "GlassesCase",
     "SawyerApron",
     "heatingPadXmas2025",
     "PJShorts",
