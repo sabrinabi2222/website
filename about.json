@@ -1,0 +1,119 @@
+{
+  "title": "About Me",
+  "sections": [
+    {
+      "text": "Hi there! I'm Sabrina, the gal behind Made by Goo.",
+      "photos": [
+        {
+          "src": "media/about/630A2087.JPG",
+          "caption": "",
+          "alt": "Sabrina portrait",
+          "crop_y": 85.0
+        }
+      ]
+    },
+    {
+      "text": "I'm the youngest of four, and yes, all sisters.",
+      "photos": [
+        {
+          "src": "media/about/630A3522.JPG",
+          "caption": "",
+          "alt": "Sisters photo",
+          "crop_y": 35.0
+        },
+        {
+          "src": "media/about/Facetune_04-01-2023-01-44-29.JPG",
+          "caption": "",
+          "alt": "",
+          "crop_y": 59.0
+        }
+      ]
+    },
+    {
+      "text": "I'm a proud auntie to 3 nieces and 3 nephews",
+      "photos": [
+        {
+          "src": "media/about/IMG_6226.HEIC",
+          "caption": "",
+          "alt": "Auntie photo",
+          "crop_y": 35.0
+        },
+        {
+          "src": "media/about/IMG_4279.HEIC",
+          "caption": "",
+          "alt": "Kitty photo",
+          "crop_y": 35.0
+        },
+        {
+          "src": "media/about/630A4102.JPG",
+          "caption": "",
+          "alt": "",
+          "crop_y": 35.0
+        },
+        {
+          "src": "media/about/630A3434.JPG",
+          "caption": "",
+          "alt": "",
+          "crop_y": 35.0
+        }
+      ]
+    },
+    {
+      "text": "... and a proud mama to two kitties.",
+      "photos": [
+        {
+          "src": "media/about/IMG_6542.HEIC",
+          "caption": "",
+          "alt": "Sabrina and Kevin photo",
+          "crop_y": 35.0
+        },
+        {
+          "src": "media/about/IMG_5317.HEIC",
+          "caption": "",
+          "alt": "Elopement photo",
+          "crop_y": 35.0
+        }
+      ]
+    },
+    {
+      "text": "and, I'm married to my best friend, Kevin. We eloped in 2023 in the White Mountains.",
+      "photos": [
+        {
+          "src": "media/about/IMG_3397.HEIC",
+          "caption": "",
+          "alt": "Closing photo",
+          "crop_y": 35.0
+        },
+        {
+          "src": "media/about/Kevin-Sabrina-Elopement-Final-0337.JPG",
+          "caption": "",
+          "alt": "",
+          "crop_y": 35.0
+        }
+      ]
+    },
+    {
+      "text": "I'm happy you are here! Let's take some pictures and craft together.",
+      "photos": [
+        {
+          "src": "media/about/IMG_2614.HEIC",
+          "caption": "",
+          "alt": "",
+          "crop_y": 35.0
+        },
+        {
+          "src": "media/about/IMG_0593.HEIC",
+          "caption": "",
+          "alt": "",
+          "crop_y": 35.0
+        },
+        {
+          "src": "media/about/IMG_0031.JPG",
+          "caption": "",
+          "alt": "",
+          "crop_y": 35.0
+        }
+      ]
+    }
+  ]
+}

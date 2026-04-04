@@ -119,6 +119,7 @@
 
 /* door color hints */
 .door--sew .door-emoji{ background:#fff6fb; border-color:#f7cbe0; }
+.door--about .door-emoji{ background:#f7fff8; border-color:#bfe8c7; }
 .door--photo .door-emoji{ background:#f7fbff; border-color:#bcdcff; }
 .door--contact .door-emoji{ background:#fffdf3; border-color:#f7e1a1; }
 

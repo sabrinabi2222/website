@@ -70,6 +70,19 @@ Tips:
 - The UI writes the selected project into `sewing.json` or `photography.json`
 - Selected media is auto-sorted by capture datetime (EXIF for JPG/JPEG, fallback to file modified time), then you can drag-adjust
 
+## About organizer UI (line-by-line photo planning)
+
+Use this when you want to decide which photos go with each About text line:
+
+1. Start the helper server:
+   ```bash
+   python3 scripts/project_helper_server.py --port 4173
+   ```
+2. Open `http://127.0.0.1:4173/tools/about-organizer.html`
+3. Edit text lines, add/remove/reorder photo slots, choose image paths
+4. Click `Save About Page` to update `about.json`
+5. Refresh `about.html` to view the result
+
 ## Validate content
 
 Run this anytime after edits:

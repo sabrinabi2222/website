@@ -21,6 +21,12 @@ from projects import (
 )
 
 ROOT = Path(__file__).resolve().parent.parent
+ABOUT_JSON = ROOT / "about.json"
+ABOUT_MEDIA_DIRS = (
+    ROOT / "media" / "about",
+    ROOT / "media" / "photos" / "large",
+)
+ABOUT_EXTS = {".jpg", ".jpeg", ".png", ".webp", ".gif", ".avif", ".heic", ".heif", ".mp4", ".mov", ".m4v", ".webm"}
 
 
 class ProjectHelperHandler(SimpleHTTPRequestHandler):
@@ -44,6 +50,41 @@ class ProjectHelperHandler(SimpleHTTPRequestHandler):
 
     def do_GET(self) -> None:
         parsed = urlparse(self.path)
+        if parsed.path == "/api/about-data":
+            try:
+                data = json.loads(ABOUT_JSON.read_text(encoding="utf-8"))
+                self._send_json(HTTPStatus.OK, {"ok": True, "about": data})
+            except FileNotFoundError:
+                self._send_json(
+                    HTTPStatus.OK,
+                    {"ok": True, "about": {"title": "About Me", "sections": []}},
+                )
+            except Exception as exc:  # noqa: BLE001
+                self._send_json(HTTPStatus.INTERNAL_SERVER_ERROR, {"ok": False, "error": f"Unexpected error: {exc}"})
+            return
+
+        if parsed.path == "/api/list-about-media":
+            try:
+                options = []
+                seen = set()
+                for media_dir in ABOUT_MEDIA_DIRS:
+                    if not media_dir.exists():
+                        continue
+                    for path in sorted(media_dir.rglob("*")):
+                        if not path.is_file():
+                            continue
+                        if path.suffix.lower() not in ABOUT_EXTS:
+                            continue
+                        rel = path.relative_to(ROOT).as_posix()
+                        if rel in seen:
+                            continue
+                        seen.add(rel)
+                        options.append(rel)
+                self._send_json(HTTPStatus.OK, {"ok": True, "media": options})
+            except Exception as exc:  # noqa: BLE001
+                self._send_json(HTTPStatus.INTERNAL_SERVER_ERROR, {"ok": False, "error": f"Unexpected error: {exc}"})
+            return
+
         if parsed.path == "/api/list-projects":
             try:
                 params = parse_qs(parsed.query)
@@ -103,6 +144,71 @@ class ProjectHelperHandler(SimpleHTTPRequestHandler):
         super().do_GET()
 
     def do_POST(self) -> None:
+        if self.path == "/api/save-about":
+            try:
+                length = int(self.headers.get("Content-Length", "0"))
+                raw = self.rfile.read(length)
+                payload = json.loads(raw.decode("utf-8"))
+
+                title = (payload.get("title") or "").strip()
+                sections = payload.get("sections")
+                if not title:
+                    raise ProjectError("About title is required")
+                if not isinstance(sections, list) or not sections:
+                    raise ProjectError("At least one section is required")
+
+                normalized_sections = []
+                for idx, section in enumerate(sections, start=1):
+                    text = str((section or {}).get("text") or "").strip()
+                    photos = (section or {}).get("photos")
+                    if not text:
+                        raise ProjectError(f"Section {idx} is missing text")
+                    if not isinstance(photos, list):
+                        raise ProjectError(f"Section {idx} photos must be a list")
+
+                    normalized_photos = []
+                    for pidx, photo in enumerate(photos, start=1):
+                        src = str((photo or {}).get("src") or "").strip()
+                        caption = str((photo or {}).get("caption") or "").strip()
+                        alt = str((photo or {}).get("alt") or "").strip()
+                        crop_raw = (photo or {}).get("crop_y", (photo or {}).get("cropY"))
+                        crop_y = None
+                        if crop_raw is not None and str(crop_raw).strip() != "":
+                            try:
+                                crop_y = float(crop_raw)
+                            except ValueError:
+                                crop_y = None
+
+                        if crop_y is None:
+                            focus = str((photo or {}).get("focus") or "top").strip().lower()
+                            if focus in {"bottom"}:
+                                crop_y = 75.0
+                            elif focus in {"center", "middle"}:
+                                crop_y = 50.0
+                            else:
+                                crop_y = 35.0
+
+                        if not src:
+                            raise ProjectError(f"Section {idx} photo {pidx} is missing src")
+                        crop_y = max(0.0, min(100.0, crop_y))
+                        normalized_photos.append({"src": src, "caption": caption, "alt": alt, "crop_y": crop_y})
+
+                    normalized_sections.append({"text": text, "photos": normalized_photos})
+
+                output = {"title": title, "sections": normalized_sections}
+                ABOUT_JSON.write_text(json.dumps(output, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+                self._send_json(
+                    HTTPStatus.OK,
+                    {"ok": True, "updated": ABOUT_JSON.name, "sections": len(normalized_sections)},
+                )
+            except json.JSONDecodeError:
+                self._send_json(HTTPStatus.BAD_REQUEST, {"ok": False, "error": "Invalid JSON body"})
+            except ProjectError as exc:
+                self._send_json(HTTPStatus.BAD_REQUEST, {"ok": False, "error": str(exc)})
+            except Exception as exc:  # noqa: BLE001
+                self._send_json(HTTPStatus.INTERNAL_SERVER_ERROR, {"ok": False, "error": f"Unexpected error: {exc}"})
+            return
+
         if self.path != "/api/add-project":
             self._send_json(HTTPStatus.NOT_FOUND, {"ok": False, "error": "Not found"})
             return

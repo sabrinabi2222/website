@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Organizer</title>
+  <style>
+    :root {
+      --bg: #f8f5f1;
+      --ink: #181614;
+      --muted: #6f6860;
+      --line: #d8cec2;
+      --card: #fff;
+      --accent: #f2b76f;
+      --ok: #1e7a44;
+      --err: #a12727;
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Trebuchet MS", "Segoe UI", sans-serif; }
+    main { max-width: 1280px; margin: 0 auto; padding: 20px; }
+    h1 { margin: 0 0 6px; font-size: 1.8rem; }
+    .muted { margin: 0 0 14px; color: var(--muted); }
+    .panel { border: 1px solid var(--line); border-radius: 10px; background: var(--card); padding: 14px; margin-bottom: 12px; }
+    .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    label { display: block; font-size: 0.85rem; color: var(--muted); margin-bottom: 5px; }
+    input[type="text"], textarea, select { width: 100%; border: 1px solid var(--line); border-radius: 8px; padding: 10px; font: inherit; }
+    textarea { min-height: 80px; resize: vertical; }
+    button { border: 1px solid #b58a56; background: var(--accent); color: #261a08; border-radius: 8px; padding: 8px 12px; font: inherit; cursor: pointer; }
+    button.secondary { background: #fff; border-color: var(--line); color: var(--ink); }
+    .status { padding: 10px; border-radius: 8px; border: 1px solid var(--line); background: #fff; color: var(--muted); min-height: 44px; }
+    .status.ok { border-color: #9bc9ae; color: var(--ok); background: #eef9f2; }
+    .status.err { border-color: #dfb4b4; color: var(--err); background: #fff2f2; }
+    .status.warn { border-color: #dcc28f; color: #76551f; background: #fff7e8; }
+    .dirty { color: var(--err); font-weight: 700; }
+
+    .section-card { border: 1px solid var(--line); border-radius: 8px; padding: 10px; margin-top: 10px; background: #fff; }
+    .section-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+    .photos { display: grid; gap: 8px; margin-top: 8px; }
+    .photo-item { border: 1px solid var(--line); border-radius: 8px; padding: 8px; display: grid; grid-template-columns: 130px 1fr auto; gap: 8px; align-items: start; }
+    .thumb { width: 130px; height: 90px; object-fit: cover; border: 1px solid var(--line); border-radius: 6px; background: #ece7e1; }
+    .photo-fields { display: grid; gap: 6px; }
+    .photo-actions { display: grid; gap: 6px; align-content: start; }
+    .small { font-size: 0.84rem; color: var(--muted); }
+
+    @media (max-width: 860px) {
+      .photo-item { grid-template-columns: 1fr; }
+      .thumb { width: 100%; height: 180px; }
+      .photo-actions { grid-template-columns: repeat(3, auto); }
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <h1>About Organizer</h1>
+    <p class="muted">Plan About text lines and assign photos to each line, then save to <code>about.json</code>.</p>
+
+    <section class="panel">
+      <div style="max-width: 560px;">
+        <label for="title">About Title</label>
+        <input id="title" type="text" placeholder="Hi, I'm Sabrina" />
+      </div>
+      <div class="row" style="margin-top: 10px;">
+        <button id="addSection" type="button">Add Text Line</button>
+        <button id="reload" type="button" class="secondary">Reload From about.json</button>
+        <a href="../about.html" target="_blank" rel="noopener" class="small">Open About Page</a>
+      </div>
+    </section>
+
+    <section class="panel">
+      <strong>Lines + Photos</strong>
+      <div id="sections"></div>
+    </section>
+
+    <section class="panel">
+      <div class="row">
+        <button id="save" type="button">Save About Page</button>
+        <span id="dirtyState" class="small">No unsaved changes.</span>
+      </div>
+      <div id="status" class="status">Ready.</div>
+      <p class="small" style="margin-top:10px;">Run with <code>python3 scripts/project_helper_server.py --port 4173</code> and open <code>/tools/about-organizer.html</code>.</p>
+    </section>
+  </main>
+
+  <script>
+    const sectionsEl = document.getElementById("sections");
+    const titleEl = document.getElementById("title");
+    const statusEl = document.getElementById("status");
+    const dirtyStateEl = document.getElementById("dirtyState");
+    const saveBtn = document.getElementById("save");
+
+    let mediaOptions = [];
+    let model = { title: "About Me", sections: [] };
+    let isDirty = false;
+    let isSaving = false;
+    let lastSavedSignature = "";
+
+    function setStatus(msg, kind) {
+      statusEl.textContent = msg;
+      statusEl.className = "status" + (kind ? " " + kind : "");
+    }
+
+    function setDirty(nextDirty) {
+      isDirty = !!nextDirty;
+      dirtyStateEl.textContent = isDirty ? "Unsaved changes." : "No unsaved changes.";
+      dirtyStateEl.className = "small" + (isDirty ? " dirty" : "");
+      if (isDirty && !isSaving) setStatus("You have unsaved changes.", "warn");
+    }
+
+    function emptyPhoto() {
+      const fallback = mediaOptions[0] || "media/photos/large/moon.jpg";
+      return { src: fallback, caption: "", alt: "", crop_y: 35 };
+    }
+
+    function emptySection() {
+      return { text: "", photos: [emptyPhoto()] };
+    }
+
+    function moveItem(arr, from, to) {
+      if (to < 0 || to >= arr.length) return;
+      const [item] = arr.splice(from, 1);
+      arr.splice(to, 0, item);
+    }
+
+    function refreshPreview(imgEl, src) {
+      const raw = String(src || "").trim();
+      if (!raw) {
+        imgEl.src = "";
+        return;
+      }
+      if (raw.startsWith("http://") || raw.startsWith("https://") || raw.startsWith("data:") || raw.startsWith("blob:")) {
+        imgEl.src = raw;
+        return;
+      }
+      imgEl.src = "/" + raw.replace(/^\/+/, "");
+    }
+
+    function clampCropY(value) {
+      const n = Number(value);
+      if (!Number.isFinite(n)) return 35;
+      return Math.max(0, Math.min(100, n));
+    }
+
+    function readCropY(photo) {
+      if (photo && photo.crop_y !== undefined && photo.crop_y !== null && String(photo.crop_y).trim() !== "") {
+        return clampCropY(photo.crop_y);
+      }
+      if (photo && photo.cropY !== undefined && photo.cropY !== null && String(photo.cropY).trim() !== "") {
+        return clampCropY(photo.cropY);
+      }
+      const focus = String((photo && photo.focus) || "").toLowerCase();
+      if (focus === "bottom") return 75;
+      if (focus === "center" || focus === "middle") return 50;
+      return 35;
+    }
+
+    function normalizeAboutData(raw) {
+      const title = String((raw && raw.title) || "").trim() || "About Me";
+      const sections = Array.isArray(raw && raw.sections) ? raw.sections : [];
+      const normalizedSections = [];
+
+      for (const section of sections) {
+        const text = String((section && section.text) || "").trim();
+        if (!text) continue;
+        const photos = Array.isArray(section && section.photos) ? section.photos : [];
+        const normalizedPhotos = photos
+          .map((p) => ({
+            src: String((p && p.src) || "").trim(),
+            caption: String((p && p.caption) || "").trim(),
+            alt: String((p && p.alt) || "").trim(),
+            crop_y: readCropY(p),
+          }))
+          .filter((p) => p.src);
+        normalizedSections.push({ text, photos: normalizedPhotos });
+      }
+
+      return { title, sections: normalizedSections };
+    }
+
+    function payloadSignature(payload) {
+      return JSON.stringify(payload);
+    }
+
+    function render() {
+      titleEl.value = model.title || "";
+      sectionsEl.innerHTML = "";
+
+      model.sections.forEach((section, sIdx) => {
+        const card = document.createElement("article");
+        card.className = "section-card";
+
+        const head = document.createElement("div");
+        head.className = "section-head";
+        const label = document.createElement("strong");
+        label.textContent = `Line ${sIdx + 1}`;
+
+        const controls = document.createElement("div");
+        controls.className = "row";
+
+        const up = document.createElement("button");
+        up.type = "button";
+        up.className = "secondary";
+        up.textContent = "Up";
+        up.onclick = () => { moveItem(model.sections, sIdx, sIdx - 1); setDirty(true); render(); };
+
+        const down = document.createElement("button");
+        down.type = "button";
+        down.className = "secondary";
+        down.textContent = "Down";
+        down.onclick = () => { moveItem(model.sections, sIdx, sIdx + 1); setDirty(true); render(); };
+
+        const remove = document.createElement("button");
+        remove.type = "button";
+        remove.className = "secondary";
+        remove.textContent = "Remove";
+        remove.onclick = () => {
+          model.sections.splice(sIdx, 1);
+          if (!model.sections.length) model.sections.push(emptySection());
+          setDirty(true);
+          render();
+        };
+
+        controls.appendChild(up);
+        controls.appendChild(down);
+        controls.appendChild(remove);
+        head.appendChild(label);
+        head.appendChild(controls);
+
+        const textWrap = document.createElement("div");
+        const textLabel = document.createElement("label");
+        textLabel.textContent = "Text line";
+        const textArea = document.createElement("textarea");
+        textArea.value = section.text || "";
+        textArea.oninput = () => { section.text = textArea.value; setDirty(true); };
+        textWrap.appendChild(textLabel);
+        textWrap.appendChild(textArea);
+
+        const photos = document.createElement("div");
+        photos.className = "photos";
+
+        (section.photos || []).forEach((photo, pIdx) => {
+          const item = document.createElement("div");
+          item.className = "photo-item";
+
+          const img = document.createElement("img");
+          img.className = "thumb";
+          img.alt = "preview";
+          img.style.objectPosition = `50% ${readCropY(photo)}%`;
+          refreshPreview(img, photo.src);
+
+          const fields = document.createElement("div");
+          fields.className = "photo-fields";
+
+          const srcWrap = document.createElement("div");
+          const srcLabel = document.createElement("label");
+          srcLabel.textContent = "Photo src";
+          const srcSelect = document.createElement("select");
+
+          const custom = document.createElement("option");
+          custom.value = "";
+          custom.textContent = "Custom path";
+          srcSelect.appendChild(custom);
+
+          for (const option of mediaOptions) {
+            const o = document.createElement("option");
+            o.value = option;
+            o.textContent = option;
+            srcSelect.appendChild(o);
+          }
+
+          if (mediaOptions.includes(photo.src)) {
+            srcSelect.value = photo.src;
+          } else {
+            srcSelect.value = "";
+          }
+
+          const srcInput = document.createElement("input");
+          srcInput.type = "text";
+          srcInput.value = photo.src || "";
+          srcInput.placeholder = "media/photos/large/your-photo.jpg";
+
+          srcSelect.onchange = () => {
+            if (srcSelect.value) {
+              srcInput.value = srcSelect.value;
+              photo.src = srcSelect.value;
+              refreshPreview(img, photo.src);
+              setDirty(true);
+            }
+          };
+          srcInput.oninput = () => {
+            photo.src = srcInput.value.trim();
+            refreshPreview(img, photo.src);
+            setDirty(true);
+          };
+
+          srcWrap.appendChild(srcLabel);
+          srcWrap.appendChild(srcSelect);
+          srcWrap.appendChild(srcInput);
+
+          const capLabel = document.createElement("label");
+          capLabel.textContent = "Caption";
+          const capInput = document.createElement("input");
+          capInput.type = "text";
+          capInput.value = photo.caption || "";
+          capInput.oninput = () => { photo.caption = capInput.value; setDirty(true); };
+
+          const altLabel = document.createElement("label");
+          altLabel.textContent = "Alt text";
+          const altInput = document.createElement("input");
+          altInput.type = "text";
+          altInput.value = photo.alt || "";
+          altInput.oninput = () => { photo.alt = altInput.value; setDirty(true); };
+
+          const cropLabel = document.createElement("label");
+          cropLabel.textContent = "Vertical crop (0 top, 100 bottom)";
+          const cropRow = document.createElement("div");
+          cropRow.className = "row";
+          cropRow.style.margin = "0";
+          const cropSlider = document.createElement("input");
+          cropSlider.type = "range";
+          cropSlider.min = "0";
+          cropSlider.max = "100";
+          cropSlider.step = "1";
+          cropSlider.value = String(readCropY(photo));
+          cropSlider.style.flex = "1";
+          const cropNumber = document.createElement("input");
+          cropNumber.type = "text";
+          cropNumber.value = String(readCropY(photo));
+          cropNumber.style.width = "78px";
+          const syncCrop = (raw) => {
+            const value = clampCropY(raw);
+            photo.crop_y = value;
+            cropSlider.value = String(value);
+            cropNumber.value = String(value);
+            img.style.objectPosition = `50% ${value}%`;
+            setDirty(true);
+          };
+          cropSlider.oninput = () => syncCrop(cropSlider.value);
+          cropNumber.onchange = () => syncCrop(cropNumber.value);
+          cropRow.appendChild(cropSlider);
+          cropRow.appendChild(cropNumber);
+
+          fields.appendChild(srcWrap);
+          fields.appendChild(capLabel);
+          fields.appendChild(capInput);
+          fields.appendChild(altLabel);
+          fields.appendChild(altInput);
+          fields.appendChild(cropLabel);
+          fields.appendChild(cropRow);
+
+          const actions = document.createElement("div");
+          actions.className = "photo-actions";
+
+          const pUp = document.createElement("button");
+          pUp.type = "button";
+          pUp.className = "secondary";
+          pUp.textContent = "Up";
+          pUp.onclick = () => { moveItem(section.photos, pIdx, pIdx - 1); setDirty(true); render(); };
+
+          const pDown = document.createElement("button");
+          pDown.type = "button";
+          pDown.className = "secondary";
+          pDown.textContent = "Down";
+          pDown.onclick = () => { moveItem(section.photos, pIdx, pIdx + 1); setDirty(true); render(); };
+
+          const pRemove = document.createElement("button");
+          pRemove.type = "button";
+          pRemove.className = "secondary";
+          pRemove.textContent = "Remove";
+          pRemove.onclick = () => {
+            section.photos.splice(pIdx, 1);
+            if (!section.photos.length) section.photos.push(emptyPhoto());
+            setDirty(true);
+            render();
+          };
+
+          actions.appendChild(pUp);
+          actions.appendChild(pDown);
+          actions.appendChild(pRemove);
+
+          item.appendChild(img);
+          item.appendChild(fields);
+          item.appendChild(actions);
+          photos.appendChild(item);
+        });
+
+        const addPhotoRow = document.createElement("div");
+        addPhotoRow.className = "row";
+        const addPhoto = document.createElement("button");
+        addPhoto.type = "button";
+        addPhoto.className = "secondary";
+        addPhoto.textContent = "Add Photo Slot";
+        addPhoto.onclick = () => {
+          section.photos.push(emptyPhoto());
+          setDirty(true);
+          render();
+        };
+        addPhotoRow.appendChild(addPhoto);
+
+        card.appendChild(head);
+        card.appendChild(textWrap);
+        card.appendChild(photos);
+        card.appendChild(addPhotoRow);
+        sectionsEl.appendChild(card);
+      });
+    }
+
+    async function loadData() {
+      try {
+        const [aboutRes, mediaRes] = await Promise.all([
+          fetch("/api/about-data"),
+          fetch("/api/list-about-media"),
+        ]);
+        const about = await aboutRes.json();
+        const media = await mediaRes.json();
+
+        if (!aboutRes.ok || !about.ok) throw new Error(about.error || "Could not load about data");
+        if (!mediaRes.ok || !media.ok) throw new Error(media.error || "Could not load media list");
+
+        mediaOptions = media.media || [];
+        model = normalizeAboutData(about.about || { title: "About Me", sections: [] });
+        if (!Array.isArray(model.sections) || !model.sections.length) model.sections = [emptySection()];
+        for (const section of model.sections) {
+          if (!Array.isArray(section.photos) || !section.photos.length) section.photos = [emptyPhoto()];
+          for (const photo of section.photos) {
+            photo.crop_y = readCropY(photo);
+          }
+        }
+        render();
+        lastSavedSignature = payloadSignature(normalizeAboutData(model));
+        setDirty(false);
+        setStatus(`Loaded ${model.sections.length} text lines.`, "ok");
+      } catch (err) {
+        setStatus(`Could not load data. ${err.message}`, "err");
+      }
+    }
+
+    function buildPayloadFromModel() {
+      model.title = titleEl.value.trim() || "About Me";
+      for (const section of model.sections) {
+        section.text = (section.text || "").trim();
+        section.photos = (section.photos || []).map((p) => ({
+          src: (p.src || "").trim(),
+          caption: (p.caption || "").trim(),
+          alt: (p.alt || "").trim(),
+          crop_y: readCropY(p),
+        })).filter((p) => p.src);
+      }
+
+      return normalizeAboutData({
+        title: model.title,
+        sections: model.sections,
+      });
+    }
+
+    async function saveData() {
+      const payload = buildPayloadFromModel();
+      const expectedSignature = payloadSignature(payload);
+
+      if (!payload.sections.length) {
+        setStatus("Add at least one text line before saving.", "err");
+        return;
+      }
+      if (!isDirty && expectedSignature === lastSavedSignature) {
+        setStatus("No changes to save.", "ok");
+        return;
+      }
+
+      isSaving = true;
+      saveBtn.disabled = true;
+      setStatus("Saving about.json...", "");
+      try {
+        const res = await fetch("/api/save-about", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json();
+        if (!res.ok || !data.ok) throw new Error(data.error || "Request failed");
+
+        const verifyRes = await fetch("/api/about-data", { cache: "no-store" });
+        const verifyData = await verifyRes.json();
+        if (!verifyRes.ok || !verifyData.ok) throw new Error(verifyData.error || "Save verification failed");
+        const verified = normalizeAboutData(verifyData.about || {});
+        const verifiedSignature = payloadSignature(verified);
+        if (expectedSignature !== verifiedSignature) {
+          throw new Error("Save completed, but saved file did not match current editor values. Click Reload and try again.");
+        }
+
+        lastSavedSignature = expectedSignature;
+        setDirty(false);
+        setStatus(`Saved ${data.updated} with ${data.sections} sections. Verified.`, "ok");
+      } catch (err) {
+        setStatus(`Could not save. ${err.message}`, "err");
+      } finally {
+        isSaving = false;
+        saveBtn.disabled = false;
+      }
+    }
+
+    titleEl.addEventListener("input", () => { setDirty(true); });
+
+    document.getElementById("addSection").addEventListener("click", () => {
+      model.sections.push(emptySection());
+      setDirty(true);
+      render();
+    });
+    document.getElementById("reload").addEventListener("click", () => {
+      if (isDirty && !window.confirm("You have unsaved changes. Reload from about.json and discard edits?")) return;
+      void loadData();
+    });
+    document.getElementById("save").addEventListener("click", () => { void saveData(); });
+
+    window.addEventListener("beforeunload", (event) => {
+      if (!isDirty) return;
+      event.preventDefault();
+      event.returnValue = "";
+    });
+
+    void loadData();
+  </script>
+</body>
+
+</html>
