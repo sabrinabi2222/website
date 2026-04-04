@@ -66,6 +66,7 @@ Tips:
 - Enable `Dry run` first to verify paths and counts without writing files
 - Enable `Replace existing project key` if updating an existing project
 - The UI writes the selected project into `sewing.json` or `photography.json`
+- Selected media is auto-sorted by capture datetime (EXIF for JPG/JPEG, fallback to file modified time), then you can drag-adjust
 
 ## Validate content
 
