@@ -135,6 +135,7 @@
       color: var(--muted);
       user-select: none;
       font-size: 1.1rem;
+      cursor: grab;
     }
 
     .thumb {
@@ -291,6 +292,7 @@
 
     let rows = [];
     let dragIndex = null;
+    let nextRowId = 1;
 
     function extOf(name) {
       const dot = name.lastIndexOf(".");
@@ -433,6 +435,7 @@
         img.className = "thumb";
         img.alt = file.name;
         img.src = URL.createObjectURL(file);
+        img.draggable = false;
         return img;
       }
       if (type === "video") {
@@ -442,6 +445,7 @@
         video.muted = true;
         video.playsInline = true;
         video.preload = "metadata";
+        video.draggable = false;
         return video;
       }
       const box = document.createElement("div");
@@ -455,6 +459,7 @@
         const li = document.createElement("li");
         li.className = "item";
         li.draggable = true;
+        li.dataset.rowId = String(row.rowId);
 
         li.addEventListener("dragstart", () => {
           dragIndex = idx;
@@ -466,12 +471,12 @@
           dragIndex = null;
         });
 
-        li.addEventListener("dragover", (e) => e.preventDefault());
-        li.addEventListener("drop", (e) => {
+        li.addEventListener("dragover", (e) => {
           e.preventDefault();
           if (dragIndex === null || dragIndex === idx) return;
           const [moved] = rows.splice(dragIndex, 1);
           rows.splice(idx, 0, moved);
+          dragIndex = idx;
           render();
         });
 
@@ -517,6 +522,7 @@
           const t = typeOf(rel);
           if (t === "other") return null;
           return {
+            rowId: nextRowId++,
             file,
             type: t,
             relName: fileNameOnly(rel),
@@ -599,6 +605,10 @@
     folderInput.addEventListener("change", () => { void addFiles(folderInput.files); });
     filesInput.addEventListener("change", () => { void addFiles(filesInput.files); });
     document.getElementById("submit").addEventListener("click", submitProject);
+
+    // Prevent the browser from navigating/reloading when files are dropped on the page.
+    window.addEventListener("dragover", (e) => e.preventDefault());
+    window.addEventListener("drop", (e) => e.preventDefault());
   </script>
 </body>
 
