@@ -9,6 +9,7 @@ from functools import partial
 from http import HTTPStatus
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+from urllib.parse import parse_qs, urlparse
 
 from projects import (
     PHOTOGRAPHY_JSON,
@@ -33,6 +34,73 @@ class ProjectHelperHandler(SimpleHTTPRequestHandler):
         self.send_header("Content-Length", str(len(body)))
         self.end_headers()
         self.wfile.write(body)
+
+    def _dataset_path_for_category(self, category: str) -> Path:
+        if category == "sewing":
+            return SEWING_JSON
+        if category == "photography":
+            return PHOTOGRAPHY_JSON
+        raise ProjectError("Category must be 'sewing' or 'photography'")
+
+    def do_GET(self) -> None:
+        parsed = urlparse(self.path)
+        if parsed.path == "/api/list-projects":
+            try:
+                params = parse_qs(parsed.query)
+                category = (params.get("category", [""])[0] or "").strip()
+                dataset_path = self._dataset_path_for_category(category)
+                data = json.loads(dataset_path.read_text(encoding="utf-8"))
+                projects = data.get("projects", {})
+                order = data.get("order", [])
+                listing = [
+                    {
+                        "key": key,
+                        "title": (projects.get(key) or {}).get("title", key),
+                    }
+                    for key in order
+                    if key in projects
+                ]
+                self._send_json(HTTPStatus.OK, {"ok": True, "projects": listing})
+            except ProjectError as exc:
+                self._send_json(HTTPStatus.BAD_REQUEST, {"ok": False, "error": str(exc)})
+            except Exception as exc:  # noqa: BLE001
+                self._send_json(HTTPStatus.INTERNAL_SERVER_ERROR, {"ok": False, "error": f"Unexpected error: {exc}"})
+            return
+
+        if parsed.path == "/api/get-project":
+            try:
+                params = parse_qs(parsed.query)
+                category = (params.get("category", [""])[0] or "").strip()
+                key = (params.get("key", [""])[0] or "").strip()
+                dataset_path = self._dataset_path_for_category(category)
+                data = json.loads(dataset_path.read_text(encoding="utf-8"))
+                projects = data.get("projects", {})
+                order = data.get("order", [])
+                if key not in projects:
+                    raise ProjectError(f"Project '{key}' not found")
+
+                meta = projects[key]
+                position = "front" if order and order[0] == key else "back"
+                self._send_json(
+                    HTTPStatus.OK,
+                    {
+                        "ok": True,
+                        "project": {
+                            "key": key,
+                            "title": meta.get("title", key),
+                            "caption": meta.get("caption", ""),
+                            "position": position,
+                            "items": meta.get("items", []),
+                        },
+                    },
+                )
+            except ProjectError as exc:
+                self._send_json(HTTPStatus.BAD_REQUEST, {"ok": False, "error": str(exc)})
+            except Exception as exc:  # noqa: BLE001
+                self._send_json(HTTPStatus.INTERNAL_SERVER_ERROR, {"ok": False, "error": f"Unexpected error: {exc}"})
+            return
+
+        super().do_GET()
 
     def do_POST(self) -> None:
         if self.path != "/api/add-project":

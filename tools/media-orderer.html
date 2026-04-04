@@ -216,6 +216,15 @@
           </select>
         </div>
         <div>
+          <label for="existingProject">Load Existing Project</label>
+          <div class="row" style="margin:0;">
+            <select id="existingProject" style="flex:1;">
+              <option value="">-- choose project --</option>
+            </select>
+            <button id="loadProject" type="button" class="secondary">Load</button>
+          </div>
+        </div>
+        <div>
           <label for="position">Order Position</label>
           <select id="position">
             <option value="front">Front (newest first)</option>
@@ -289,6 +298,7 @@
     const listEl = document.getElementById("list");
     const countEl = document.getElementById("count");
     const statusEl = document.getElementById("status");
+    const existingProjectEl = document.getElementById("existingProject");
 
     let rows = [];
     let dragIndex = null;
@@ -371,7 +381,6 @@
                 const type = get16(entry + 2);
                 const components = get32(entry + 4);
                 const valueOffset = get32(entry + 8);
-
                 if (type === 2 && (tag === 0x9003 || tag === 0x9004 || tag === 0x0132)) {
                   const value = readAscii(components, tiff + valueOffset, entry);
                   const parsed = parseExifDateString(value);
@@ -429,19 +438,27 @@
       statusEl.className = "status" + (kind ? " " + kind : "");
     }
 
-    function makePreview(file, type) {
-      if (type === "image") {
+    function previewUrl(url) {
+      if (!url) return "";
+      const raw = String(url);
+      if (raw.startsWith("http://") || raw.startsWith("https://")) return raw;
+      return "/" + raw.replace(/^\/+/, "");
+    }
+
+    function makePreview(row) {
+      const src = row.sourceUrl ? previewUrl(row.sourceUrl) : (row.file ? URL.createObjectURL(row.file) : "");
+      if (row.type === "image") {
         const img = document.createElement("img");
         img.className = "thumb";
-        img.alt = file.name;
-        img.src = URL.createObjectURL(file);
+        img.alt = row.relName || "image";
+        if (src) img.src = src;
         img.draggable = false;
         return img;
       }
-      if (type === "video") {
+      if (row.type === "video") {
         const video = document.createElement("video");
         video.className = "thumb";
-        video.src = URL.createObjectURL(file);
+        if (src) video.src = src;
         video.muted = true;
         video.playsInline = true;
         video.preload = "metadata";
@@ -484,7 +501,7 @@
         handle.className = "handle";
         handle.textContent = "::";
 
-        const preview = makePreview(row.file, row.type);
+        const preview = makePreview(row);
 
         const info = document.createElement("div");
         const name = document.createElement("div");
@@ -526,13 +543,13 @@
             file,
             type: t,
             relName: fileNameOnly(rel),
+            sourceUrl: null,
             sortTs: await captureTimestamp(file, t),
           };
         }),
       );
 
       const incoming = built.filter(Boolean).sort((a, b) => a.sortTs - b.sortTs);
-
       rows = rows.concat(incoming);
       render();
       setStatus("Loaded media and auto-sorted by capture datetime (EXIF when available).", "");
@@ -540,7 +557,68 @@
 
     function collectMediaPaths() {
       const prefix = sanitizePrefix(document.getElementById("prefix").value);
-      return rows.map((row) => `${prefix}${row.relName}`);
+      return rows.map((row) => row.sourceUrl || `${prefix}${row.relName}`);
+    }
+
+    function inferPrefixFromItems(items) {
+      const firstLocal = items.find((item) => item.url && !String(item.url).startsWith("http"));
+      if (!firstLocal) return "";
+      const normalized = String(firstLocal.url).replace(/\\/g, "/");
+      const slash = normalized.lastIndexOf("/");
+      if (slash < 0) return "";
+      return normalized.slice(0, slash + 1);
+    }
+
+    async function refreshProjectList() {
+      const category = document.getElementById("category").value;
+      existingProjectEl.innerHTML = "<option value=\"\">-- choose project --</option>";
+      try {
+        const res = await fetch(`/api/list-projects?category=${encodeURIComponent(category)}`);
+        const data = await res.json();
+        if (!res.ok || !data.ok) throw new Error(data.error || "Could not load project list");
+        for (const project of data.projects || []) {
+          const opt = document.createElement("option");
+          opt.value = project.key;
+          opt.textContent = `${project.key} - ${project.title}`;
+          existingProjectEl.appendChild(opt);
+        }
+      } catch (err) {
+        setStatus(`Could not load project list. ${err.message}`, "err");
+      }
+    }
+
+    async function loadProjectForEdit() {
+      const category = document.getElementById("category").value;
+      const key = existingProjectEl.value;
+      if (!key) {
+        setStatus("Choose a project to load first.", "err");
+        return;
+      }
+      try {
+        const res = await fetch(`/api/get-project?category=${encodeURIComponent(category)}&key=${encodeURIComponent(key)}`);
+        const data = await res.json();
+        if (!res.ok || !data.ok) throw new Error(data.error || "Could not load project");
+        const project = data.project;
+        document.getElementById("key").value = project.key || key;
+        document.getElementById("title").value = project.title || "";
+        document.getElementById("caption").value = project.caption || "";
+        document.getElementById("position").value = project.position || "back";
+        document.getElementById("replace").checked = true;
+        document.getElementById("prefix").value = inferPrefixFromItems(project.items || []);
+
+        rows = (project.items || []).map((item) => ({
+          rowId: nextRowId++,
+          file: null,
+          type: item.type || typeOf(item.url || ""),
+          relName: fileNameOnly(String(item.url || "")),
+          sourceUrl: String(item.url || ""),
+          sortTs: 0,
+        }));
+        render();
+        setStatus(`Loaded ${project.key}. You can reorder/remove/add media, then click save.`, "ok");
+      } catch (err) {
+        setStatus(`Could not load project. ${err.message}`, "err");
+      }
     }
 
     async function submitProject() {
@@ -563,7 +641,6 @@
       }
 
       setStatus("Saving project...", "");
-
       try {
         const res = await fetch("/api/add-project", {
           method: "POST",
@@ -579,16 +656,14 @@
             media,
           }),
         });
-
         const data = await res.json();
-        if (!res.ok || !data.ok) {
-          throw new Error(data.error || "Request failed");
-        }
-
+        if (!res.ok || !data.ok) throw new Error(data.error || "Request failed");
         if (data.dry_run) {
           setStatus(`Dry run OK: ${data.count} media items (${data.images} images, ${data.videos} videos).`, "ok");
         } else {
           setStatus(`Saved ${data.project} to ${data.updated} with ${data.count} media items.`, "ok");
+          document.getElementById("replace").checked = true;
+          void refreshProjectList();
         }
       } catch (err) {
         setStatus(`Could not save. ${err.message}. Make sure you started scripts/project_helper_server.py`, "err");
@@ -597,6 +672,7 @@
 
     document.getElementById("pickFolder").addEventListener("click", () => folderInput.click());
     document.getElementById("pickFiles").addEventListener("click", () => filesInput.click());
+    document.getElementById("loadProject").addEventListener("click", () => { void loadProjectForEdit(); });
     document.getElementById("clearAll").addEventListener("click", () => {
       rows = [];
       render();
@@ -606,9 +682,10 @@
     filesInput.addEventListener("change", () => { void addFiles(filesInput.files); });
     document.getElementById("submit").addEventListener("click", submitProject);
 
-    // Prevent the browser from navigating/reloading when files are dropped on the page.
     window.addEventListener("dragover", (e) => e.preventDefault());
     window.addEventListener("drop", (e) => e.preventDefault());
+    document.getElementById("category").addEventListener("change", () => { void refreshProjectList(); });
+    void refreshProjectList();
   </script>
 </body>
 

@@ -559,9 +559,156 @@
       ],
       "title": "Other Favorite Photos I've Taken",
       "caption": "Kevin and I's trip to China; Trip to California with my parents; Fall in NH; Acadia; and more"
+    },
+    "SherinRangerWedding": {
+      "items": [
+        {
+          "url": "media/photos/grid/SherinRanger-4.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/SherinRanger-31.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/SherinRanger-1.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/630A4404.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/SherinRanger-8.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/SherinRanger-34.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/SherinRanger-38.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/SherinRanger-12.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/SherinRanger-13.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/SherinRanger-17.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/SherinRanger-41.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/SherinRanger-62.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/SherinRanger-68.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/SherinRanger-71.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/SherinRanger-85_PS.JPEG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/SherinRanger-69.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/SherinRanger-91.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/SherinRanger-94.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/SherinRanger-104.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/SherinRanger-189.JPEG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/SherinRanger-109.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/SherinRanger-115.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/SherinRanger-120.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/SherinRanger-128.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/SherinRanger-133.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/SherinRanger-145.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/SherinRanger-148.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/SherinRanger-165.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/SherinRanger-169.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/SherinRanger-106_PS.PNG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/SherinRanger-174.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/SherinRanger-196.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/SherinRanger-201.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/SherinRanger-205.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/SherinRanger-206.JPG",
+          "type": "image"
+        }
+      ],
+      "title": "Sherin and Ranger Wedding",
+      "caption": "Quincy city hall wedding photography"
     }
   },
   "order": [
+    "SherinRangerWedding",
     "junebirth",
     "KhrisAndAprilEngagement",
     "JuneReveal",
