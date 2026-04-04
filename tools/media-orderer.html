@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Media Order Helper</title>
+  <style>
+    :root {
+      --bg: #faf7f3;
+      --ink: #1c1b1a;
+      --muted: #67615a;
+      --line: #d8cec2;
+      --card: #fff;
+      --accent: #f3b36b;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 1.7rem;
+    }
+
+    .muted {
+      margin: 0 0 20px;
+      color: var(--muted);
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--card);
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    label {
+      font-size: 0.9rem;
+      color: var(--muted);
+      min-width: 110px;
+    }
+
+    input[type="text"],
+    textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px;
+      font: inherit;
+      background: #fff;
+      color: var(--ink);
+    }
+
+    .grow {
+      flex: 1 1 360px;
+    }
+
+    button {
+      border: 1px solid #b98b53;
+      background: var(--accent);
+      color: #2a1a05;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    button.secondary {
+      background: #fff;
+      border-color: var(--line);
+      color: var(--ink);
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 8px;
+    }
+
+    li.item {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 8px;
+      display: grid;
+      grid-template-columns: 36px 56px 1fr auto;
+      align-items: center;
+      gap: 10px;
+      cursor: grab;
+    }
+
+    li.item.dragging {
+      opacity: 0.55;
+    }
+
+    .handle {
+      color: var(--muted);
+      text-align: center;
+      font-size: 1.2rem;
+      user-select: none;
+    }
+
+    .thumb {
+      width: 56px;
+      height: 56px;
+      border-radius: 6px;
+      border: 1px solid var(--line);
+      background: #f1ece6;
+      object-fit: cover;
+    }
+
+    .name {
+      font-size: 0.95rem;
+      word-break: break-word;
+    }
+
+    .type {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .small {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .out {
+      min-height: 180px;
+      white-space: pre;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-left: 8px;
+    }
+
+    @media (max-width: 760px) {
+      li.item {
+        grid-template-columns: 28px 46px 1fr;
+      }
+
+      .type {
+        grid-column: 2 / -1;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <h1>Media Order Helper</h1>
+    <p class="muted">Drop/select project files, drag to reorder, then copy the generated file list for <code>projects.py</code>.</p>
+
+    <section class="panel">
+      <div class="row">
+        <label for="prefix">Path Prefix</label>
+        <div class="grow">
+          <input id="prefix" type="text" placeholder="media/sewing/HeartCoasterSet/" />
+        </div>
+      </div>
+
+      <div class="row">
+        <button id="pickFolder" type="button">Choose Folder</button>
+        <button id="pickFiles" type="button" class="secondary">Choose Files</button>
+        <button id="clearAll" type="button" class="secondary">Clear</button>
+        <span id="count" class="small">0 files</span>
+      </div>
+
+      <input id="folderInput" type="file" webkitdirectory directory multiple hidden />
+      <input id="filesInput" type="file" multiple hidden />
+    </section>
+
+    <section class="panel">
+      <div class="row">
+        <strong>Ordered Media</strong>
+        <span class="pill">drag items to reorder</span>
+      </div>
+      <ul id="list"></ul>
+    </section>
+
+    <section class="panel">
+      <div class="row">
+        <button id="generate" type="button">Generate Ordered List</button>
+        <button id="copy" type="button" class="secondary">Copy</button>
+        <button id="download" type="button" class="secondary">Download .txt</button>
+      </div>
+      <textarea id="output" class="out" placeholder="Generated file list appears here..."></textarea>
+      <p class="small">Use with: <code>python3 scripts/projects.py add-sewing --media-file ordered-media.txt ...</code></p>
+    </section>
+  </main>
+
+  <script>
+    const IMAGE_EXTS = new Set(["jpg", "jpeg", "png", "webp", "gif", "avif", "heic", "heif"]);
+    const VIDEO_EXTS = new Set(["mp4", "mov", "m4v", "webm"]);
+
+    const folderInput = document.getElementById("folderInput");
+    const filesInput = document.getElementById("filesInput");
+    const listEl = document.getElementById("list");
+    const outputEl = document.getElementById("output");
+    const countEl = document.getElementById("count");
+    const prefixEl = document.getElementById("prefix");
+
+    let rows = [];
+    let dragIndex = null;
+
+    function extOf(name) {
+      const dot = name.lastIndexOf(".");
+      return dot >= 0 ? name.slice(dot + 1).toLowerCase() : "";
+    }
+
+    function typeOf(name) {
+      const ext = extOf(name);
+      if (IMAGE_EXTS.has(ext)) return "image";
+      if (VIDEO_EXTS.has(ext)) return "video";
+      return "other";
+    }
+
+    function makePreview(file, type) {
+      if (type === "image") {
+        const img = document.createElement("img");
+        img.className = "thumb";
+        img.alt = file.name;
+        img.src = URL.createObjectURL(file);
+        return img;
+      }
+      if (type === "video") {
+        const video = document.createElement("video");
+        video.className = "thumb";
+        video.src = URL.createObjectURL(file);
+        video.muted = true;
+        video.playsInline = true;
+        video.preload = "metadata";
+        return video;
+      }
+      const box = document.createElement("div");
+      box.className = "thumb";
+      return box;
+    }
+
+    function sanitizePrefix(text) {
+      const p = (text || "").trim();
+      if (!p) return "";
+      return p.endsWith("/") ? p : p + "/";
+    }
+
+    function render() {
+      listEl.innerHTML = "";
+      rows.forEach((row, idx) => {
+        const li = document.createElement("li");
+        li.className = "item";
+        li.draggable = true;
+        li.dataset.index = String(idx);
+
+        li.addEventListener("dragstart", () => {
+          dragIndex = idx;
+          li.classList.add("dragging");
+        });
+        li.addEventListener("dragend", () => {
+          li.classList.remove("dragging");
+          dragIndex = null;
+        });
+        li.addEventListener("dragover", (e) => e.preventDefault());
+        li.addEventListener("drop", (e) => {
+          e.preventDefault();
+          const to = idx;
+          if (dragIndex === null || dragIndex === to) return;
+          const [moved] = rows.splice(dragIndex, 1);
+          rows.splice(to, 0, moved);
+          render();
+        });
+
+        const handle = document.createElement("div");
+        handle.className = "handle";
+        handle.textContent = "::";
+
+        const preview = makePreview(row.file, row.type);
+
+        const nameWrap = document.createElement("div");
+        const name = document.createElement("div");
+        name.className = "name";
+        name.textContent = row.name;
+        const type = document.createElement("div");
+        type.className = "type";
+        type.textContent = row.type;
+        nameWrap.appendChild(name);
+        nameWrap.appendChild(type);
+
+        const remove = document.createElement("button");
+        remove.type = "button";
+        remove.className = "secondary";
+        remove.textContent = "Remove";
+        remove.addEventListener("click", () => {
+          rows.splice(idx, 1);
+          render();
+        });
+
+        li.appendChild(handle);
+        li.appendChild(preview);
+        li.appendChild(nameWrap);
+        li.appendChild(remove);
+        listEl.appendChild(li);
+      });
+
+      countEl.textContent = `${rows.length} file${rows.length === 1 ? "" : "s"}`;
+    }
+
+    function addFiles(files) {
+      const incoming = Array.from(files)
+        .map((file) => {
+          const rel = file.webkitRelativePath || file.name;
+          const t = typeOf(rel);
+          return { file, name: rel, type: t };
+        })
+        .filter((row) => row.type !== "other");
+
+      rows = rows.concat(incoming);
+      render();
+    }
+
+    function generateOutput() {
+      const prefix = sanitizePrefix(prefixEl.value);
+      const lines = rows.map((row) => `${prefix}${row.name.replace(/\\/g, "/")}`);
+      outputEl.value = lines.join("\n");
+    }
+
+    document.getElementById("pickFolder").addEventListener("click", () => folderInput.click());
+    document.getElementById("pickFiles").addEventListener("click", () => filesInput.click());
+
+    folderInput.addEventListener("change", () => addFiles(folderInput.files));
+    filesInput.addEventListener("change", () => addFiles(filesInput.files));
+
+    document.getElementById("clearAll").addEventListener("click", () => {
+      rows = [];
+      outputEl.value = "";
+      render();
+    });
+
+    document.getElementById("generate").addEventListener("click", generateOutput);
+
+    document.getElementById("copy").addEventListener("click", async () => {
+      if (!outputEl.value.trim()) generateOutput();
+      await navigator.clipboard.writeText(outputEl.value);
+    });
+
+    document.getElementById("download").addEventListener("click", () => {
+      if (!outputEl.value.trim()) generateOutput();
+      const blob = new Blob([outputEl.value], { type: "text/plain;charset=utf-8" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "ordered-media.txt";
+      a.click();
+      URL.revokeObjectURL(a.href);
+    });
+  </script>
+</body>
+
+</html>

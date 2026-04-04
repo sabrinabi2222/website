@@ -78,6 +78,36 @@ def gather_explicit(media_values: Iterable[str]) -> list[MediaItem]:
     return items
 
 
+def resolve_path(path_text: str) -> Path:
+    candidate = Path(path_text)
+    if candidate.is_absolute():
+        return candidate
+
+    cwd_candidate = (Path.cwd() / candidate).resolve()
+    if cwd_candidate.exists():
+        return cwd_candidate
+
+    return (ROOT / candidate).resolve()
+
+
+def read_media_file(path_text: str) -> list[str]:
+    file_path = resolve_path(path_text)
+    if not file_path.exists() or not file_path.is_file():
+        raise ProjectError(f"Media list file not found: {path_text}")
+
+    values: list[str] = []
+    for raw in file_path.read_text(encoding="utf-8").splitlines():
+        line = raw.strip()
+        if not line or line.startswith("#"):
+            continue
+        values.append(line)
+
+    if not values:
+        raise ProjectError(f"Media list file is empty: {path_text}")
+
+    return values
+
+
 def load_dataset(path: Path) -> dict:
     with path.open("r", encoding="utf-8") as f:
         data = json.load(f)
@@ -218,13 +248,21 @@ def parse_args() -> argparse.Namespace:
         default=[],
         help="Explicit media file path (repeatable); skips --media-dir auto-scan",
     )
+    sewing.add_argument(
+        "--media-file",
+        help="Text file with one media path/URL per line (supports comments with #)",
+    )
 
     photo = sub.add_parser("add-photography", parents=[common], help="Add/update a photography project")
     photo.add_argument(
         "--media",
         action="append",
-        required=True,
+        default=[],
         help="Media URL/path (repeatable; supports Cloudinary URLs or local files)",
+    )
+    photo.add_argument(
+        "--media-file",
+        help="Text file with one media path/URL per line (supports comments with #)",
     )
 
     sub.add_parser("validate", help="Validate sewing.json and photography.json")
@@ -236,8 +274,13 @@ def run() -> int:
 
     try:
         if args.command == "add-sewing":
+            if args.media and args.media_file:
+                raise ProjectError("Use either --media or --media-file, not both")
+
             if args.media:
                 items = gather_explicit(args.media)
+            elif args.media_file:
+                items = gather_explicit(read_media_file(args.media_file))
             else:
                 media_dir = args.media_dir or f"media/sewing/{args.key}"
                 items = gather_from_dir(media_dir)
@@ -255,7 +298,11 @@ def run() -> int:
             return 0
 
         if args.command == "add-photography":
-            items = gather_explicit(args.media)
+            if args.media and args.media_file:
+                raise ProjectError("Use either --media or --media-file, not both")
+
+            media_values = args.media or (read_media_file(args.media_file) if args.media_file else [])
+            items = gather_explicit(media_values)
             upsert_project(
                 json_path=PHOTOGRAPHY_JSON,
                 key=args.key,
