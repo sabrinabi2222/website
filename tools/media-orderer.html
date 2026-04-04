@@ -448,24 +448,93 @@
       statusEl.className = "status" + (kind ? " " + kind : "");
     }
 
-    function previewUrl(url) {
+    function safeUploadKey(url) {
+      if (!url || !String(url).includes("/upload/")) return "";
+      let tail = String(url).split("/upload/")[1].split("?")[0];
+      tail = tail.replace(/\.[^.]+$/, "");
+      return tail.replace(/[\/\\]/g, "-");
+    }
+
+    function localImageFromUpload(url) {
+      const key = safeUploadKey(url);
+      return key ? `media/photos/grid/${key}.jpg` : "";
+    }
+
+    function localVideoGridFromUpload(url) {
+      const key = safeUploadKey(url);
+      return key ? `media/videos/grid/${key}.mp4` : "";
+    }
+
+    function localVideoPosterFromUpload(url) {
+      const key = safeUploadKey(url);
+      return key ? `media/videos/posters/${key}.jpg` : "";
+    }
+
+    function normalizeToLocal(url, type) {
       if (!url) return "";
-      const raw = String(url);
-      if (raw.startsWith("http://") || raw.startsWith("https://")) return raw;
-      return "/" + raw.replace(/^\/+/, "");
+      const raw = String(url).trim();
+      if (!raw) return "";
+      if (raw.startsWith("http://") || raw.startsWith("https://")) {
+        if (type === "image") return localImageFromUpload(raw);
+        if (type === "video") return localVideoGridFromUpload(raw);
+        return "";
+      }
+      return raw.replace(/^\/+/, "");
+    }
+
+    function previewUrl(localPath) {
+      if (!localPath) return "";
+      return "/" + String(localPath).replace(/^\/+/, "");
+    }
+
+    function posterFromVideoPath(videoPath) {
+      if (!videoPath) return "";
+      const normalized = String(videoPath).replace(/\\/g, "/");
+      if (normalized.startsWith("media/videos/grid/")) {
+        const name = normalized.split("/").pop() || "";
+        const noExt = name.replace(/\.[^.]+$/, "");
+        return `media/videos/posters/${noExt}.jpg`;
+      }
+      return "";
+    }
+
+    function setImageWithFallback(img, primary, fallback) {
+      const first = primary || fallback || "";
+      const second = fallback && fallback !== first ? fallback : "";
+      img.src = first;
+      if (second) {
+        img.addEventListener(
+          "error",
+          () => {
+            img.src = second;
+          },
+          { once: true },
+        );
+      }
     }
 
     function makePreview(row) {
-      const src = row.sourceUrl ? previewUrl(row.sourceUrl) : (row.file ? URL.createObjectURL(row.file) : "");
+      const src = row.sourceUrl ? previewUrl(normalizeToLocal(row.sourceUrl, row.type)) : (row.file ? URL.createObjectURL(row.file) : "");
       if (row.type === "image") {
         const img = document.createElement("img");
         img.className = "thumb";
         img.alt = row.relName || "image";
-        if (src) img.src = src;
+        const fallback = "";
+        setImageWithFallback(img, src, fallback);
         img.draggable = false;
         return img;
       }
       if (row.type === "video") {
+        if (row.sourceUrl && !row.file) {
+          const img = document.createElement("img");
+          img.className = "thumb";
+          img.alt = row.relName || "video";
+          const videoLocal = normalizeToLocal(row.sourceUrl, "video");
+          const poster = posterFromVideoPath(videoLocal) || localVideoPosterFromUpload(row.sourceUrl);
+          setImageWithFallback(img, previewUrl(poster), "");
+          img.draggable = false;
+          return img;
+        }
         const video = document.createElement("video");
         video.className = "thumb";
         if (src) video.src = src;
@@ -567,13 +636,16 @@
 
     function collectMediaPaths() {
       const prefix = sanitizePrefix(document.getElementById("prefix").value);
-      return rows.map((row) => row.sourceUrl || `${prefix}${row.relName}`);
+      return rows.map((row) => {
+        if (row.sourceUrl) return normalizeToLocal(row.sourceUrl, row.type);
+        return `${prefix}${row.relName}`;
+      });
     }
 
     function inferPrefixFromItems(items) {
-      const firstLocal = items.find((item) => item.url && !String(item.url).startsWith("http"));
+      const firstLocal = items.find((item) => normalizeToLocal(item.url, item.type));
       if (!firstLocal) return "";
-      const normalized = String(firstLocal.url).replace(/\\/g, "/");
+      const normalized = normalizeToLocal(firstLocal.url, firstLocal.type).replace(/\\/g, "/");
       const slash = normalized.lastIndexOf("/");
       if (slash < 0) return "";
       return normalized.slice(0, slash + 1);
@@ -630,7 +702,7 @@
           file: null,
           type: item.type || typeOf(item.url || ""),
           relName: fileNameOnly(String(item.url || "")),
-          sourceUrl: String(item.url || ""),
+          sourceUrl: normalizeToLocal(String(item.url || ""), item.type || typeOf(item.url || "")),
           sortTs: 0,
         }));
         render();

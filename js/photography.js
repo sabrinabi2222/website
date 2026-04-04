@@ -1,6 +1,4 @@
 (function () {
-  const USE_LOCAL = true;
-
   function safeKey(u) {
     if (!u || !u.includes('/upload/')) return '';
     let tail = u.split('/upload/')[1].split('?')[0];
@@ -8,7 +6,7 @@
     return tail.replace(/[\/\\]/g, '-');
   }
 
-  function localPaths(u, type) {
+  function localPathsFromUpload(u, type) {
     const k = safeKey(u);
     if (!k) return {};
     if (type === 'image') {
@@ -27,32 +25,46 @@
     return {};
   }
 
-  function cdnImage(u, kind) {
-    return u.includes('/image/upload/')
-      ? u.replace('/image/upload/', '/image/upload/f_auto,q_auto,' + (kind === 'large' ? 'w_1600' : 'w_900') + '/')
-      : u;
+  function isRemote(u) {
+    return typeof u === 'string' && (u.startsWith('http://') || u.startsWith('https://'));
   }
 
-  function cdnVideo(u, kind) {
-    if (!u.includes('/video/upload/')) return u;
-    const tx = kind === 'large'
-      ? 'e_volume:mute,c_limit,w_1280,fps_30,br_2m,q_auto:good,vc_h264,f_mp4'
-      : 'e_volume:mute,c_limit,w_720,fps_30,br_1m,q_auto:good,vc_h264,f_mp4';
-    return u.replace('/video/upload/', '/video/upload/' + tx + '/');
+  function imgGridSrc(u) {
+    if (!u) return '';
+    if (isRemote(u)) return localPathsFromUpload(u, 'image').grid;
+    return u;
   }
 
-  function cdnPoster(u) {
-    if (!u.includes('/video/upload/')) return '';
-    const [left, right] = u.split('/video/upload/');
-    const base = right.split('?')[0].replace(/\.[^.]+$/, '');
-    return `${left}/video/upload/so_1,c_limit,w_720,f_jpg,q_auto/${base}.jpg`;
+  function imgLargeSrc(u) {
+    if (!u) return '';
+    if (isRemote(u)) return localPathsFromUpload(u, 'image').large;
+    if (u.startsWith('media/photos/grid/')) {
+      return u.replace('media/photos/grid/', 'media/photos/large/');
+    }
+    return u;
   }
 
-  function imgGridSrc(u) { return USE_LOCAL ? localPaths(u, 'image').grid : cdnImage(u, 'grid'); }
-  function imgLargeSrc(u) { return USE_LOCAL ? localPaths(u, 'image').large : cdnImage(u, 'large'); }
-  function vidGridSrc(u) { return USE_LOCAL ? localPaths(u, 'video').grid : cdnVideo(u, 'grid'); }
-  function vidLargeSrc(u) { return USE_LOCAL ? localPaths(u, 'video').large : cdnVideo(u, 'large'); }
-  function vidPoster(u) { return USE_LOCAL ? localPaths(u, 'video').poster : cdnPoster(u); }
+  function vidGridSrc(u) {
+    if (!u) return '';
+    if (isRemote(u)) return localPathsFromUpload(u, 'video').grid;
+    return u;
+  }
+
+  function vidLargeSrc(u) {
+    if (!u) return '';
+    if (isRemote(u)) return localPathsFromUpload(u, 'video').large;
+    return u;
+  }
+
+  function vidPoster(u) {
+    if (!u) return '';
+    if (isRemote(u)) return localPathsFromUpload(u, 'video').poster;
+    if (u.startsWith('media/videos/grid/')) {
+      const name = u.split('/').pop().replace(/\.[^.]+$/, '');
+      return `media/videos/posters/${name}.jpg`;
+    }
+    return '';
+  }
 
   const videoObserver = window.MBG.createVideoObserver();
 
@@ -111,14 +123,6 @@
           v.src = vidGridSrc(item.url);
           v.dataset.large = vidLargeSrc(item.url);
 
-          v.onerror = () => {
-            if (USE_LOCAL) {
-              v.src = cdnVideo(item.url, 'grid');
-              v.dataset.large = cdnVideo(item.url, 'large');
-              v.poster = cdnPoster(item.url);
-            }
-          };
-
           v.addEventListener('loadedmetadata', () => {
             if (v.videoWidth > v.videoHeight) card.classList.add('landscape');
           });
@@ -128,15 +132,14 @@
         } else {
           const img = document.createElement('img');
           img.loading = 'lazy';
-          img.src = imgGridSrc(item.url);
+          img.src = imgLargeSrc(item.url);
           img.alt = projectKey;
           img.dataset.large = imgLargeSrc(item.url);
 
           img.onerror = () => {
-            if (USE_LOCAL) {
-              img.src = cdnImage(item.url, 'grid');
-              img.dataset.large = cdnImage(item.url, 'large');
-            }
+            const grid = imgGridSrc(item.url);
+            img.src = grid;
+            img.dataset.large = grid;
           };
 
           img.onload = () => {
