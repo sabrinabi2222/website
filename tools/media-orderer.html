@@ -225,10 +225,19 @@
           </div>
         </div>
         <div>
-          <label for="position">Order Position</label>
-          <select id="position">
+          <label for="positionMode">Project Placement</label>
+          <select id="positionMode">
             <option value="front">Front (newest first)</option>
             <option value="back">Back (oldest first)</option>
+            <option value="keep">Keep current spot (when editing)</option>
+            <option value="before">Before selected project</option>
+            <option value="after">After selected project</option>
+          </select>
+        </div>
+        <div>
+          <label for="positionKey">Placement Target (for before/after)</label>
+          <select id="positionKey">
+            <option value="">-- choose target project --</option>
           </select>
         </div>
         <div>
@@ -299,6 +308,7 @@
     const countEl = document.getElementById("count");
     const statusEl = document.getElementById("status");
     const existingProjectEl = document.getElementById("existingProject");
+    const positionKeyEl = document.getElementById("positionKey");
 
     let rows = [];
     let dragIndex = null;
@@ -572,15 +582,23 @@
     async function refreshProjectList() {
       const category = document.getElementById("category").value;
       existingProjectEl.innerHTML = "<option value=\"\">-- choose project --</option>";
+      positionKeyEl.innerHTML = "<option value=\"\">-- choose target project --</option>";
       try {
         const res = await fetch(`/api/list-projects?category=${encodeURIComponent(category)}`);
         const data = await res.json();
         if (!res.ok || !data.ok) throw new Error(data.error || "Could not load project list");
         for (const project of data.projects || []) {
-          const opt = document.createElement("option");
-          opt.value = project.key;
-          opt.textContent = `${project.key} - ${project.title}`;
-          existingProjectEl.appendChild(opt);
+          const label = `${project.key} - ${project.title}`;
+
+          const loadOpt = document.createElement("option");
+          loadOpt.value = project.key;
+          loadOpt.textContent = label;
+          existingProjectEl.appendChild(loadOpt);
+
+          const placeOpt = document.createElement("option");
+          placeOpt.value = project.key;
+          placeOpt.textContent = label;
+          positionKeyEl.appendChild(placeOpt);
         }
       } catch (err) {
         setStatus(`Could not load project list. ${err.message}`, "err");
@@ -602,7 +620,8 @@
         document.getElementById("key").value = project.key || key;
         document.getElementById("title").value = project.title || "";
         document.getElementById("caption").value = project.caption || "";
-        document.getElementById("position").value = project.position || "back";
+        document.getElementById("positionMode").value = "keep";
+        positionKeyEl.value = "";
         document.getElementById("replace").checked = true;
         document.getElementById("prefix").value = inferPrefixFromItems(project.items || []);
 
@@ -626,7 +645,8 @@
       const title = document.getElementById("title").value.trim();
       const caption = document.getElementById("caption").value.trim();
       const category = document.getElementById("category").value;
-      const position = document.getElementById("position").value;
+      const positionMode = document.getElementById("positionMode").value;
+      const positionKey = (positionKeyEl.value || "").trim();
       const replace = document.getElementById("replace").checked;
       const dryRun = document.getElementById("dryRun").checked;
       const media = collectMediaPaths();
@@ -650,7 +670,8 @@
             key,
             title,
             caption,
-            position,
+            position_mode: positionMode,
+            position_key: positionKey,
             replace,
             dry_run: dryRun,
             media,

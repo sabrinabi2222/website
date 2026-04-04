@@ -139,7 +139,8 @@ def upsert_project(
     title: str,
     caption: str,
     items: list[MediaItem],
-    position: str,
+    position_mode: str,
+    position_key: str | None,
     replace: bool,
 ) -> None:
     data = load_dataset(json_path)
@@ -155,12 +156,33 @@ def upsert_project(
         "caption": caption,
     }
 
+    old_index = None
     if key in order:
+        old_index = order.index(key)
         order.remove(key)
-    if position == "front":
+
+    if position_mode == "front":
         order.insert(0, key)
-    else:
+    elif position_mode == "back":
         order.append(key)
+    elif position_mode == "keep":
+        if old_index is not None:
+            insert_at = max(0, min(old_index, len(order)))
+            order.insert(insert_at, key)
+        else:
+            order.append(key)
+    elif position_mode in {"before", "after"}:
+        if not position_key:
+            raise ProjectError(f"--position-key is required when --position-mode {position_mode} is used")
+        if position_key == key:
+            raise ProjectError("--position-key cannot be the same as --key")
+        if position_key not in order:
+            raise ProjectError(f"Position key '{position_key}' is not present in order[]")
+        anchor_idx = order.index(position_key)
+        insert_at = anchor_idx if position_mode == "before" else anchor_idx + 1
+        order.insert(insert_at, key)
+    else:
+        raise ProjectError(f"Unsupported position mode: {position_mode}")
 
     save_dataset(json_path, data)
 
@@ -233,7 +255,16 @@ def parse_args() -> argparse.Namespace:
         "--position",
         choices=["front", "back"],
         default="front",
+        help="Legacy placement option; use --position-mode for fine-grained control",
+    )
+    common.add_argument(
+        "--position-mode",
+        choices=["front", "back", "before", "after", "keep"],
         help="Where to place the project key in order[]",
+    )
+    common.add_argument(
+        "--position-key",
+        help="Anchor project key for --position-mode before|after",
     )
     common.add_argument("--replace", action="store_true", help="Replace an existing project key")
 
@@ -273,6 +304,9 @@ def run() -> int:
     args = parse_args()
 
     try:
+        position_mode = args.position_mode or args.position
+        position_key = (args.position_key or "").strip() or None
+
         if args.command == "add-sewing":
             if args.media and args.media_file:
                 raise ProjectError("Use either --media or --media-file, not both")
@@ -291,7 +325,8 @@ def run() -> int:
                 title=args.title,
                 caption=args.caption,
                 items=items,
-                position=args.position,
+                position_mode=position_mode,
+                position_key=position_key,
                 replace=args.replace,
             )
             print(f"Updated {SEWING_JSON.name} with project '{args.key}' ({len(items)} items)")
@@ -309,7 +344,8 @@ def run() -> int:
                 title=args.title,
                 caption=args.caption,
                 items=items,
-                position=args.position,
+                position_mode=position_mode,
+                position_key=position_key,
                 replace=args.replace,
             )
             print(f"Updated {PHOTOGRAPHY_JSON.name} with project '{args.key}' ({len(items)} items)")

@@ -3,15 +3,7 @@
     "junebirth": {
       "items": [
         {
-          "url": "media/photos/grid/630A2762.JPG",
-          "type": "image"
-        },
-        {
           "url": "media/photos/grid/630A3285.jpg",
-          "type": "image"
-        },
-        {
-          "url": "media/photos/grid/630A3268.JPG",
           "type": "image"
         },
         {
@@ -19,11 +11,15 @@
           "type": "image"
         },
         {
-          "url": "media/photos/grid/630A2893.JPG",
+          "url": "media/photos/grid/630A3163.JPG",
           "type": "image"
         },
         {
-          "url": "media/photos/grid/630A2892.JPG",
+          "url": "media/photos/grid/630A2762.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/630A2848.jpg",
           "type": "image"
         },
         {
@@ -35,35 +31,11 @@
           "type": "image"
         },
         {
-          "url": "media/photos/grid/630A3205.JPG",
-          "type": "image"
-        },
-        {
-          "url": "media/photos/grid/630A2867.jpg",
-          "type": "image"
-        },
-        {
-          "url": "media/photos/grid/630A3163.JPG",
-          "type": "image"
-        },
-        {
-          "url": "media/photos/grid/FullSizeRender.JPG",
-          "type": "image"
-        },
-        {
-          "url": "media/photos/grid/630A2848.jpg",
-          "type": "image"
-        },
-        {
           "url": "media/photos/grid/630A2647.JPG",
           "type": "image"
         },
         {
           "url": "media/photos/grid/630A2829.JPG",
-          "type": "image"
-        },
-        {
-          "url": "media/photos/grid/630A2802.jpg",
           "type": "image"
         }
       ],
@@ -704,16 +676,16 @@
         }
       ],
       "title": "Sherin and Ranger Wedding",
-      "caption": "Quincy city hall wedding photography"
+      "caption": "Quincy City Hall wedding photoshoot"
     }
   },
   "order": [
     "SherinRangerWedding",
-    "junebirth",
     "KhrisAndAprilEngagement",
     "JuneReveal",
     "ToddFamPhotos",
     "StephChiro",
-    "misc"
+    "misc",
+    "junebirth"
   ]
 }

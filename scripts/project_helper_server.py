@@ -116,7 +116,8 @@ class ProjectHelperHandler(SimpleHTTPRequestHandler):
             key = (payload.get("key") or "").strip()
             title = (payload.get("title") or "").strip()
             caption = (payload.get("caption") or "").strip()
-            position = payload.get("position") or "front"
+            position_mode = (payload.get("position_mode") or payload.get("position") or "front").strip()
+            position_key = (payload.get("position_key") or "").strip() or None
             replace = bool(payload.get("replace"))
             dry_run = bool(payload.get("dry_run"))
             media = payload.get("media") or []
@@ -129,8 +130,8 @@ class ProjectHelperHandler(SimpleHTTPRequestHandler):
                 raise ProjectError("Project title is required")
             if not caption:
                 raise ProjectError("Project caption is required")
-            if position not in {"front", "back"}:
-                raise ProjectError("Position must be 'front' or 'back'")
+            if position_mode not in {"front", "back", "before", "after", "keep"}:
+                raise ProjectError("Position mode must be front, back, before, after, or keep")
             if not isinstance(media, list) or not media:
                 raise ProjectError("At least one media path/URL is required")
 
@@ -159,7 +160,8 @@ class ProjectHelperHandler(SimpleHTTPRequestHandler):
                 title=title,
                 caption=caption,
                 items=items,
-                position=position,
+                position_mode=position_mode,
+                position_key=position_key,
                 replace=replace,
             )
 

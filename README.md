@@ -64,6 +64,7 @@ Use the local UI if you want to drag media order and save directly:
 Tips:
 
 - To edit an existing project: pick it in `Load Existing Project`, click `Load`, then reorder/add/remove and save
+- Placement supports `front`, `back`, `keep`, `before`, and `after` with a target project for middle insertion
 - Enable `Dry run` first to verify paths and counts without writing files
 - Enable `Replace existing project key` if updating an existing project
 - The UI writes the selected project into `sewing.json` or `photography.json`
