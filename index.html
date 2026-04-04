@@ -14,25 +14,6 @@
 </head>
 
 <body class="home">
-  <!-- ✨ cursor sparkle (kept) -->
-  <script>
-    (function () {
-      const canHover = matchMedia('(hover:hover)').matches;
-      const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (!canHover || reduced) return;
-      const SHAPES = ['✧', '✦', '★', '✺']; let last = 0; const MIN_MS = 40;
-      document.addEventListener('mousemove', (e) => {
-        const now = performance.now(); if (now - last < MIN_MS) return; last = now;
-        const s = document.createElement('span'); s.className = 'spark';
-        s.textContent = SHAPES[Math.floor(Math.random() * SHAPES.length)];
-        const rot = (Math.random() * 20 - 10).toFixed(1); const scale = 0.9 + Math.random() * 0.3;
-        s.style.left = e.clientX + 'px'; s.style.top = e.clientY + 'px';
-        s.style.transform = `translate(-50%,-50%) scale(${scale}) rotate(${rot}deg)`;
-        document.body.appendChild(s); setTimeout(() => s.remove(), 750);
-      }, { passive: true });
-    })();
-  </script>
-
   <header>
     <div class="marquee"><span>🧵 made by goo ✂️</span></div>
     <h1>Made by Goo</h1>
@@ -106,23 +87,8 @@
   </main>
 
   <footer>&copy; 2025 Sabrina Bi.</footer>
-<script>
-  // Make the Contact door feel active: smooth scroll and replay highlight
-  document.querySelectorAll('a[href="#contact"]').forEach(link => {
-    link.addEventListener('click', (e) => {
-      const target = document.getElementById('contact');
-      // Always smooth-scroll (some browsers ignore CSS-only behavior)
-      e.preventDefault();
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-      // Replay the pink flash every time
-      target.classList.remove('flash');
-      // Reflow trick to restart the animation
-      void target.offsetWidth;
-      target.classList.add('flash');
-    });
-  });
-</script>
+  <script src="js/shared.js"></script>
+  <script src="js/index.js"></script>
 
 </body>
 
