@@ -4,15 +4,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Media Order Helper</title>
+  <title>Project Builder</title>
   <style>
     :root {
-      --bg: #faf7f3;
-      --ink: #1c1b1a;
-      --muted: #67615a;
+      --bg: #f8f5f1;
+      --ink: #181614;
+      --muted: #6f6860;
       --line: #d8cec2;
       --card: #fff;
-      --accent: #f3b36b;
+      --accent: #f2b76f;
+      --ok: #1e7a44;
+      --err: #a12727;
     }
 
     * {
@@ -27,18 +29,18 @@
     }
 
     main {
-      max-width: 1100px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 24px;
+      padding: 20px;
     }
 
     h1 {
-      margin: 0 0 8px;
-      font-size: 1.7rem;
+      margin: 0 0 6px;
+      font-size: 1.8rem;
     }
 
     .muted {
-      margin: 0 0 20px;
+      margin: 0 0 18px;
       color: var(--muted);
     }
 
@@ -50,6 +52,12 @@
       margin-bottom: 14px;
     }
 
+    .grid {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(2, minmax(240px, 1fr));
+    }
+
     .row {
       display: flex;
       gap: 10px;
@@ -59,12 +67,14 @@
     }
 
     label {
-      font-size: 0.9rem;
+      display: block;
+      font-size: 0.85rem;
       color: var(--muted);
-      min-width: 110px;
+      margin-bottom: 5px;
     }
 
     input[type="text"],
+    select,
     textarea {
       width: 100%;
       border: 1px solid var(--line);
@@ -75,14 +85,15 @@
       color: var(--ink);
     }
 
-    .grow {
-      flex: 1 1 360px;
+    textarea {
+      min-height: 96px;
+      resize: vertical;
     }
 
     button {
-      border: 1px solid #b98b53;
+      border: 1px solid #b58a56;
       background: var(--accent);
-      color: #2a1a05;
+      color: #261a08;
       border-radius: 8px;
       padding: 8px 12px;
       font: inherit;
@@ -109,29 +120,29 @@
       background: #fff;
       padding: 8px;
       display: grid;
-      grid-template-columns: 36px 56px 1fr auto;
-      align-items: center;
+      grid-template-columns: 30px 120px 1fr auto;
       gap: 10px;
+      align-items: center;
       cursor: grab;
     }
 
-    li.item.dragging {
+    .dragging {
       opacity: 0.55;
     }
 
     .handle {
-      color: var(--muted);
       text-align: center;
-      font-size: 1.2rem;
+      color: var(--muted);
       user-select: none;
+      font-size: 1.1rem;
     }
 
     .thumb {
-      width: 56px;
-      height: 56px;
+      width: 120px;
+      height: 120px;
       border-radius: 6px;
       border: 1px solid var(--line);
-      background: #f1ece6;
+      background: #ece7e1;
       object-fit: cover;
     }
 
@@ -143,6 +154,28 @@
     .type {
       font-size: 0.8rem;
       color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .status {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--muted);
+      min-height: 44px;
+    }
+
+    .status.ok {
+      border-color: #9bc9ae;
+      color: var(--ok);
+      background: #eef9f2;
+    }
+
+    .status.err {
+      border-color: #dfb4b4;
+      color: var(--err);
+      background: #fff2f2;
     }
 
     .small {
@@ -150,28 +183,18 @@
       color: var(--muted);
     }
 
-    .out {
-      min-height: 180px;
-      white-space: pre;
-    }
-
-    .pill {
-      display: inline-block;
-      padding: 2px 7px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      font-size: 0.75rem;
-      color: var(--muted);
-      margin-left: 8px;
-    }
-
-    @media (max-width: 760px) {
-      li.item {
-        grid-template-columns: 28px 46px 1fr;
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: 1fr;
       }
 
-      .type {
-        grid-column: 2 / -1;
+      li.item {
+        grid-template-columns: 24px 90px 1fr;
+      }
+
+      .thumb {
+        width: 90px;
+        height: 90px;
       }
     }
   </style>
@@ -179,13 +202,43 @@
 
 <body>
   <main>
-    <h1>Media Order Helper</h1>
-    <p class="muted">Drop/select project files, drag to reorder, then copy the generated file list for <code>projects.py</code>.</p>
+    <h1>Project Builder</h1>
+    <p class="muted">Pick media, drag to set order, fill project info, then click one button to add to the site JSON.</p>
 
     <section class="panel">
-      <div class="row">
-        <label for="prefix">Path Prefix</label>
-        <div class="grow">
+      <div class="grid">
+        <div>
+          <label for="category">Category</label>
+          <select id="category">
+            <option value="sewing">Sewing</option>
+            <option value="photography">Photography</option>
+          </select>
+        </div>
+        <div>
+          <label for="position">Order Position</label>
+          <select id="position">
+            <option value="front">Front (newest first)</option>
+            <option value="back">Back (oldest first)</option>
+          </select>
+        </div>
+        <div>
+          <label for="key">Project Key (no spaces)</label>
+          <input id="key" type="text" placeholder="HeartCoasterSet" />
+        </div>
+        <div>
+          <label for="title">Project Title</label>
+          <input id="title" type="text" placeholder="Heart Coaster Set" />
+        </div>
+      </div>
+
+      <div style="margin-top:10px;">
+        <label for="caption">Caption</label>
+        <textarea id="caption" placeholder="Short description for the project"></textarea>
+      </div>
+
+      <div class="row" style="margin-top:10px;">
+        <div style="min-width:300px; flex:1;">
+          <label for="prefix">Path Prefix (for local files)</label>
           <input id="prefix" type="text" placeholder="media/sewing/HeartCoasterSet/" />
         </div>
       </div>
@@ -193,30 +246,36 @@
       <div class="row">
         <button id="pickFolder" type="button">Choose Folder</button>
         <button id="pickFiles" type="button" class="secondary">Choose Files</button>
-        <button id="clearAll" type="button" class="secondary">Clear</button>
-        <span id="count" class="small">0 files</span>
+        <button id="clearAll" type="button" class="secondary">Clear Media</button>
+        <label class="small" style="display:flex; align-items:center; gap:6px; margin:0 0 0 auto;">
+          <input id="replace" type="checkbox" /> Replace existing project key
+        </label>
+        <label class="small" style="display:flex; align-items:center; gap:6px; margin:0;">
+          <input id="dryRun" type="checkbox" /> Dry run (no file changes)
+        </label>
       </div>
 
       <input id="folderInput" type="file" webkitdirectory directory multiple hidden />
       <input id="filesInput" type="file" multiple hidden />
+      <p id="count" class="small">0 files selected</p>
     </section>
 
     <section class="panel">
       <div class="row">
-        <strong>Ordered Media</strong>
-        <span class="pill">drag items to reorder</span>
+        <strong>Media Order</strong>
+        <span class="small">drag to reorder</span>
       </div>
       <ul id="list"></ul>
     </section>
 
     <section class="panel">
       <div class="row">
-        <button id="generate" type="button">Generate Ordered List</button>
-        <button id="copy" type="button" class="secondary">Copy</button>
-        <button id="download" type="button" class="secondary">Download .txt</button>
+        <button id="submit" type="button">Add Project To Website</button>
       </div>
-      <textarea id="output" class="out" placeholder="Generated file list appears here..."></textarea>
-      <p class="small">Use with: <code>python3 scripts/projects.py add-sewing --media-file ordered-media.txt ...</code></p>
+      <div id="status" class="status">Ready.</div>
+      <p class="small" style="margin-top:10px;">
+        Run this page using <code>python3 scripts/project_helper_server.py --port 4173</code> for one-click saving.
+      </p>
     </section>
   </main>
 
@@ -227,9 +286,8 @@
     const folderInput = document.getElementById("folderInput");
     const filesInput = document.getElementById("filesInput");
     const listEl = document.getElementById("list");
-    const outputEl = document.getElementById("output");
     const countEl = document.getElementById("count");
-    const prefixEl = document.getElementById("prefix");
+    const statusEl = document.getElementById("status");
 
     let rows = [];
     let dragIndex = null;
@@ -244,6 +302,21 @@
       if (IMAGE_EXTS.has(ext)) return "image";
       if (VIDEO_EXTS.has(ext)) return "video";
       return "other";
+    }
+
+    function fileNameOnly(pathLike) {
+      return pathLike.split("/").pop().split("\\").pop();
+    }
+
+    function sanitizePrefix(text) {
+      const p = (text || "").trim();
+      if (!p) return "";
+      return p.endsWith("/") ? p : p + "/";
+    }
+
+    function setStatus(msg, kind) {
+      statusEl.textContent = msg;
+      statusEl.className = "status" + (kind ? " " + kind : "");
     }
 
     function makePreview(file, type) {
@@ -268,35 +341,29 @@
       return box;
     }
 
-    function sanitizePrefix(text) {
-      const p = (text || "").trim();
-      if (!p) return "";
-      return p.endsWith("/") ? p : p + "/";
-    }
-
     function render() {
       listEl.innerHTML = "";
       rows.forEach((row, idx) => {
         const li = document.createElement("li");
         li.className = "item";
         li.draggable = true;
-        li.dataset.index = String(idx);
 
         li.addEventListener("dragstart", () => {
           dragIndex = idx;
           li.classList.add("dragging");
         });
+
         li.addEventListener("dragend", () => {
           li.classList.remove("dragging");
           dragIndex = null;
         });
+
         li.addEventListener("dragover", (e) => e.preventDefault());
         li.addEventListener("drop", (e) => {
           e.preventDefault();
-          const to = idx;
-          if (dragIndex === null || dragIndex === to) return;
+          if (dragIndex === null || dragIndex === idx) return;
           const [moved] = rows.splice(dragIndex, 1);
-          rows.splice(to, 0, moved);
+          rows.splice(idx, 0, moved);
           render();
         });
 
@@ -306,19 +373,19 @@
 
         const preview = makePreview(row.file, row.type);
 
-        const nameWrap = document.createElement("div");
+        const info = document.createElement("div");
         const name = document.createElement("div");
         name.className = "name";
-        name.textContent = row.name;
+        name.textContent = row.relName;
         const type = document.createElement("div");
         type.className = "type";
         type.textContent = row.type;
-        nameWrap.appendChild(name);
-        nameWrap.appendChild(type);
+        info.appendChild(name);
+        info.appendChild(type);
 
         const remove = document.createElement("button");
-        remove.type = "button";
         remove.className = "secondary";
+        remove.type = "button";
         remove.textContent = "Remove";
         remove.addEventListener("click", () => {
           rows.splice(idx, 1);
@@ -327,12 +394,12 @@
 
         li.appendChild(handle);
         li.appendChild(preview);
-        li.appendChild(nameWrap);
+        li.appendChild(info);
         li.appendChild(remove);
         listEl.appendChild(li);
       });
 
-      countEl.textContent = `${rows.length} file${rows.length === 1 ? "" : "s"}`;
+      countEl.textContent = `${rows.length} file${rows.length === 1 ? "" : "s"} selected`;
     }
 
     function addFiles(files) {
@@ -340,48 +407,85 @@
         .map((file) => {
           const rel = file.webkitRelativePath || file.name;
           const t = typeOf(rel);
-          return { file, name: rel, type: t };
+          return {
+            file,
+            type: t,
+            relName: fileNameOnly(rel),
+          };
         })
-        .filter((row) => row.type !== "other");
+        .filter((r) => r.type !== "other");
 
       rows = rows.concat(incoming);
       render();
     }
 
-    function generateOutput() {
-      const prefix = sanitizePrefix(prefixEl.value);
-      const lines = rows.map((row) => `${prefix}${row.name.replace(/\\/g, "/")}`);
-      outputEl.value = lines.join("\n");
+    function collectMediaPaths() {
+      const prefix = sanitizePrefix(document.getElementById("prefix").value);
+      return rows.map((row) => `${prefix}${row.relName}`);
+    }
+
+    async function submitProject() {
+      const key = document.getElementById("key").value.trim();
+      const title = document.getElementById("title").value.trim();
+      const caption = document.getElementById("caption").value.trim();
+      const category = document.getElementById("category").value;
+      const position = document.getElementById("position").value;
+      const replace = document.getElementById("replace").checked;
+      const dryRun = document.getElementById("dryRun").checked;
+      const media = collectMediaPaths();
+
+      if (!key || !title || !caption) {
+        setStatus("Please fill project key, title, and caption.", "err");
+        return;
+      }
+      if (!media.length) {
+        setStatus("Please select at least one media file.", "err");
+        return;
+      }
+
+      setStatus("Saving project...", "");
+
+      try {
+        const res = await fetch("/api/add-project", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            category,
+            key,
+            title,
+            caption,
+            position,
+            replace,
+            dry_run: dryRun,
+            media,
+          }),
+        });
+
+        const data = await res.json();
+        if (!res.ok || !data.ok) {
+          throw new Error(data.error || "Request failed");
+        }
+
+        if (data.dry_run) {
+          setStatus(`Dry run OK: ${data.count} media items (${data.images} images, ${data.videos} videos).`, "ok");
+        } else {
+          setStatus(`Saved ${data.project} to ${data.updated} with ${data.count} media items.`, "ok");
+        }
+      } catch (err) {
+        setStatus(`Could not save. ${err.message}. Make sure you started scripts/project_helper_server.py`, "err");
+      }
     }
 
     document.getElementById("pickFolder").addEventListener("click", () => folderInput.click());
     document.getElementById("pickFiles").addEventListener("click", () => filesInput.click());
-
-    folderInput.addEventListener("change", () => addFiles(folderInput.files));
-    filesInput.addEventListener("change", () => addFiles(filesInput.files));
-
     document.getElementById("clearAll").addEventListener("click", () => {
       rows = [];
-      outputEl.value = "";
       render();
+      setStatus("Cleared media list.", "");
     });
-
-    document.getElementById("generate").addEventListener("click", generateOutput);
-
-    document.getElementById("copy").addEventListener("click", async () => {
-      if (!outputEl.value.trim()) generateOutput();
-      await navigator.clipboard.writeText(outputEl.value);
-    });
-
-    document.getElementById("download").addEventListener("click", () => {
-      if (!outputEl.value.trim()) generateOutput();
-      const blob = new Blob([outputEl.value], { type: "text/plain;charset=utf-8" });
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = "ordered-media.txt";
-      a.click();
-      URL.revokeObjectURL(a.href);
-    });
+    folderInput.addEventListener("change", () => addFiles(folderInput.files));
+    filesInput.addEventListener("change", () => addFiles(filesInput.files));
+    document.getElementById("submit").addEventListener("click", submitProject);
   </script>
 </body>
 

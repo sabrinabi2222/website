@@ -48,25 +48,24 @@ Options:
 - `--replace` updates an existing key
 - `--media-file ordered-media.txt` loads one media path/URL per line (in exact order)
 
-## Visual ordering helper
+## Project builder UI (drag + one-click add)
 
-If you want to drag/drop files to set order:
+Use the local UI if you want to drag media order and save directly:
 
-1. Run a local server in the `website` folder:
+1. Start the helper server:
    ```bash
-   python3 -m http.server 4173
+   python3 scripts/project_helper_server.py --port 4173
    ```
 2. Open `http://127.0.0.1:4173/tools/media-orderer.html`
-3. Choose folder/files, drag into the order you want, click `Generate Ordered List`
-4. Download the output as `ordered-media.txt`
-5. Use it when adding a project:
-   ```bash
-   python3 scripts/projects.py add-sewing \
-     --key HeartCoasterSet \
-     --title "Heart Coaster Set" \
-     --caption "Coasters for spring gifts" \
-     --media-file ordered-media.txt
-   ```
+3. Fill category/key/title/caption and path prefix
+4. Choose files (or folder), drag into the order you want
+5. Click `Add Project To Website`
+
+Tips:
+
+- Enable `Dry run` first to verify paths and counts without writing files
+- Enable `Replace existing project key` if updating an existing project
+- The UI writes the selected project into `sewing.json` or `photography.json`
 
 ## Validate content
 

@@ -1,0 +1,141 @@
+#!/usr/bin/env python3
+"""Local helper server for media ordering + one-click project creation."""
+
+from __future__ import annotations
+
+import argparse
+import json
+from functools import partial
+from http import HTTPStatus
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+from pathlib import Path
+
+from projects import (
+    PHOTOGRAPHY_JSON,
+    SEWING_JSON,
+    ProjectError,
+    gather_explicit,
+    upsert_project,
+    validate_dataset,
+)
+
+ROOT = Path(__file__).resolve().parent.parent
+
+
+class ProjectHelperHandler(SimpleHTTPRequestHandler):
+    def __init__(self, *args, directory=None, **kwargs):
+        super().__init__(*args, directory=directory or str(ROOT), **kwargs)
+
+    def _send_json(self, status: int, payload: dict) -> None:
+        body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
+        self.send_response(status)
+        self.send_header("Content-Type", "application/json; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
+    def do_POST(self) -> None:
+        if self.path != "/api/add-project":
+            self._send_json(HTTPStatus.NOT_FOUND, {"ok": False, "error": "Not found"})
+            return
+
+        try:
+            length = int(self.headers.get("Content-Length", "0"))
+            raw = self.rfile.read(length)
+            payload = json.loads(raw.decode("utf-8"))
+
+            category = payload.get("category")
+            key = (payload.get("key") or "").strip()
+            title = (payload.get("title") or "").strip()
+            caption = (payload.get("caption") or "").strip()
+            position = payload.get("position") or "front"
+            replace = bool(payload.get("replace"))
+            dry_run = bool(payload.get("dry_run"))
+            media = payload.get("media") or []
+
+            if category not in {"sewing", "photography"}:
+                raise ProjectError("Category must be 'sewing' or 'photography'")
+            if not key:
+                raise ProjectError("Project key is required")
+            if not title:
+                raise ProjectError("Project title is required")
+            if not caption:
+                raise ProjectError("Project caption is required")
+            if position not in {"front", "back"}:
+                raise ProjectError("Position must be 'front' or 'back'")
+            if not isinstance(media, list) or not media:
+                raise ProjectError("At least one media path/URL is required")
+
+            items = gather_explicit(media)
+
+            if dry_run:
+                image_count = sum(1 for i in items if i.type == "image")
+                video_count = sum(1 for i in items if i.type == "video")
+                self._send_json(
+                    HTTPStatus.OK,
+                    {
+                        "ok": True,
+                        "dry_run": True,
+                        "project": key,
+                        "count": len(items),
+                        "images": image_count,
+                        "videos": video_count,
+                    },
+                )
+                return
+
+            json_path = SEWING_JSON if category == "sewing" else PHOTOGRAPHY_JSON
+            upsert_project(
+                json_path=json_path,
+                key=key,
+                title=title,
+                caption=caption,
+                items=items,
+                position=position,
+                replace=replace,
+            )
+
+            errors = validate_dataset(json_path)
+            if errors:
+                raise ProjectError("Validation failed after update: " + "; ".join(errors))
+
+            self._send_json(
+                HTTPStatus.OK,
+                {
+                    "ok": True,
+                    "dry_run": False,
+                    "project": key,
+                    "updated": json_path.name,
+                    "count": len(items),
+                },
+            )
+        except json.JSONDecodeError:
+            self._send_json(HTTPStatus.BAD_REQUEST, {"ok": False, "error": "Invalid JSON body"})
+        except ProjectError as exc:
+            self._send_json(HTTPStatus.BAD_REQUEST, {"ok": False, "error": str(exc)})
+        except Exception as exc:  # noqa: BLE001
+            self._send_json(HTTPStatus.INTERNAL_SERVER_ERROR, {"ok": False, "error": f"Unexpected error: {exc}"})
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Run local helper server for project ordering/addition")
+    parser.add_argument("--port", type=int, default=4173)
+    args = parser.parse_args()
+
+    handler_cls = partial(ProjectHelperHandler, directory=str(ROOT))
+    server = ThreadingHTTPServer(("127.0.0.1", args.port), handler_cls)
+    print(f"Serving on http://127.0.0.1:{args.port}")
+    print("Open http://127.0.0.1:{port}/tools/media-orderer.html".format(port=args.port))
+
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        pass
+    finally:
+        server.server_close()
+
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
