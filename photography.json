@@ -673,9 +673,84 @@
       ],
       "title": "Sherin and Ranger Wedding",
       "caption": "Quincy City Hall wedding photoshoot"
+    },
+    "TamaraChris": {
+      "items": [
+        {
+          "url": "media/photos/grid/TamaraChris-3.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/TamaraChris-14.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/TamaraChris-16.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/TamaraChris-19.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/TamaraChris-21.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/TamaraChris-23.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/TamaraChris-26.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/TamaraChris-28.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/TamaraChris-32.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/TamaraChris-34.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/TamaraChris-36.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/TamaraChris-37.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/TamaraChris-50.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/TamaraChris-52.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/TamaraChris-55.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/TamaraChris-59.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/TamaraChris-61.JPG",
+          "type": "image"
+        }
+      ],
+      "title": "Tamara and Chris engagement",
+      "caption": "Spring engagement photoshoot at Waterfront Park"
     }
   },
   "order": [
+    "TamaraChris",
     "SherinRangerWedding",
     "KhrisAndAprilEngagement",
     "ToddFamPhotos",
