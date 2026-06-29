@@ -261,9 +261,128 @@
       ],
       "title": "Khris & April Engagement",
       "caption": "Fall engagement photoshoot at Larz Anderson Park"
+    },
+    "MichelleMarvin": {
+      "items": [
+        {
+          "url": "media/photos/grid/MichelleMarvin-3.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/MichelleMarvin-4.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/MichelleMarvin-7.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/MichelleMarvin-9.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/MichelleMarvin-12.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/MichelleMarvin-16.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/MichelleMarvin-22.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/MichelleMarvin-24.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/MichelleMarvin-25.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/MichelleMarvin-31.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/MichelleMarvin-36.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/MichelleMarvin-39.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/MichelleMarvin-38.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/MichelleMarvin-40.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/MichelleMarvin-42.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/MichelleMarvin-44.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/MichelleMarvin-54.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/MichelleMarvin-57.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/MichelleMarvin-59.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/MichelleMarvin-60.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/MichelleMarvin-65.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/MichelleMarvin-68.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/MichelleMarvin-75.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/MichelleMarvin-78.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/MichelleMarvin-82.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/MichelleMarvin-86.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/MichelleMarvin-90.JPG",
+          "type": "image"
+        },
+        {
+          "url": "media/photos/grid/MichelleMarvin-91.JPG",
+          "type": "image"
+        }
+      ],
+      "title": "Michelle and Marvin engagement",
+      "caption": "Early summer engagement photoshoot in the garden"
     }
   },
   "order": [
+    "MichelleMarvin",
     "TamaraChris",
     "SherinRangerWedding",
     "KhrisAndAprilEngagement"
