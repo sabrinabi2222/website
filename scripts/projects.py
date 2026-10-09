@@ -304,10 +304,10 @@ def run() -> int:
     args = parse_args()
 
     try:
-        position_mode = args.position_mode or args.position
-        position_key = (args.position_key or "").strip() or None
-
         if args.command == "add-sewing":
+            position_mode = args.position_mode or args.position
+            position_key = (args.position_key or "").strip() or None
+
             if args.media and args.media_file:
                 raise ProjectError("Use either --media or --media-file, not both")
 
@@ -333,6 +333,9 @@ def run() -> int:
             return 0
 
         if args.command == "add-photography":
+            position_mode = args.position_mode or args.position
+            position_key = (args.position_key or "").strip() or None
+
             if args.media and args.media_file:
                 raise ProjectError("Use either --media or --media-file, not both")
 

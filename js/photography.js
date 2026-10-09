@@ -131,15 +131,18 @@
           videoObserver.observe(v);
         } else {
           const img = document.createElement('img');
+          const gridSrc = imgGridSrc(item.url);
+          const largeSrc = imgLargeSrc(item.url);
           img.loading = 'lazy';
-          img.src = imgLargeSrc(item.url);
+          img.decoding = 'async';
+          img.src = gridSrc;
           img.alt = projectKey;
-          img.dataset.large = imgLargeSrc(item.url);
+          img.dataset.large = largeSrc;
+          img.dataset.grid = gridSrc;
 
           img.onerror = () => {
-            const grid = imgGridSrc(item.url);
-            img.src = grid;
-            img.dataset.large = grid;
+            img.src = gridSrc;
+            img.dataset.large = gridSrc;
           };
 
           img.onload = () => {
@@ -170,6 +173,9 @@
       big.className = 'lightbox-media';
       big.alt = el.alt || '';
       big.src = el.dataset.large || el.src;
+      big.onerror = () => {
+        big.src = el.dataset.grid || el.src;
+      };
       lbBody.appendChild(big);
     } else if (el.tagName === 'VIDEO') {
       const v = document.createElement('video');
